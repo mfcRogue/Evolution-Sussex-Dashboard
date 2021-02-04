@@ -22,6 +22,7 @@ class OverDueServiceReminders extends Component
         }
         $service_overdue = DB::table('vehicles')
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereNotBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->count();
         return view('livewire.vehicles.count.over-due-service-reminders', ['service_overdue' => $service_overdue]);
     }

@@ -23,19 +23,21 @@ class SendByText extends Component
         $service_due = DB::table('vehicles')
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->get();
+
         $count = 0;
         
         foreach($service_due as $vehicle_data)
         {
+            //dump($vehicle_data->RegNo);
             $service_text_send = DB::table('customer')
             ->where('Reference', '=', $vehicle_data->CustomerReference)
+            ->where('Str1', '<>', '')
             ->where('Email', '=', '')
             ->where('Email2', '=', '')
-            ->whereNotNull('Str1')
-            ->count();
-            if($service_text_send == 1)
+            ->get();
+            foreach($service_text_send as $ses)
             {
-                $count++;
+             $count++;
             }
         }
         $service_text_send = $count;

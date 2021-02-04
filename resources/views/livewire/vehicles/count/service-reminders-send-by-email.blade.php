@@ -1,0 +1,1 @@
+<div>{{$service_email_send}}</div>
