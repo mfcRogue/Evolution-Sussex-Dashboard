@@ -6,44 +6,44 @@
     </x-slot>
 <div class="flex items-stretch flex-wrap">
     <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
-    <div class="px-6 py-4  text-center">
-        <div class="font-bold text-xl mb-2"><livewire:vehicles.count.service-reminders /></div>
-        <p class="text-grey-darker text-base ">
-         Due
-        </p>
-    </div>
-    </div>
-    <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
-    <div class= "px-6 py-4  text-center">
-        <div class="font-bold text-xl mb-2"> x </div>
-        <p class="text-grey-darker text-base text-center">
-        Overdue
-        </p>
-    </div>
+        <div class="px-3 py-2  text-center">
+            <div class="font-bold text-xl mb-2"><livewire:vehicles.count.service-reminders /></div>
+            <p class="text-grey-darker text-base">
+            Due
+            </p>
+        </div>
     </div>
     <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
-    <div class="px-6 py-4  text-center">
-        <div class="font-bold text-xl mb-2"> x </div>
-        <p class="text-grey-darker text-base text-center">
-          Send by Text
-        </p>
-    </div>
-    </div>
-    <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
-    <div class="flex-grow px-6 py-4  text-center">
-        <div class="font-bold text-xl mb-2"> x </div>
-        <p class="text-grey-darker text-base text-center">
-           Send by Email
-        </p>
-    </div>
+        <div class= "px-3 py-2  text-center">
+            <div class="font-bold text-xl mb-2"><livewire:vehicles.count.over-due-service-reminders /></div>
+            <p class="text-grey-darker text-base text-center">
+            Overdue
+            </p>
+        </div>
     </div>
     <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
-    <div class=" px-6 py-4  text-center">
-        <div class="font-bold text-xl mb-2"> x </div>
-        <p class="text-grey-darker text-base text-center">
-           Send by Post
-        </p>
+        <div class="px-3 py-2  text-center">
+            <div class="font-bold text-xl mb-2"><livewire:vehicles.count.send-by-text /></div>
+            <p class="text-grey-darker text-base text-center">
+            Send by Text
+            </p>
+        </div>
     </div>
+    <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
+        <div class="flex-grow px-3 py-2  text-center">
+            <div class="font-bold text-xl mb-2"> 000 </div>
+            <p class="text-grey-darker text-base text-center">
+            Send by Email
+            </p>
+        </div>
+    </div>
+    <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
+        <div class=" px-3 py-2  text-center">
+            <div class="font-bold text-xl mb-2"> 000 </div>
+            <p class="text-grey-darker text-base text-center">
+            Send by Post
+            </p>
+        </div>
     </div>
 </div>
 </x-app-layout>

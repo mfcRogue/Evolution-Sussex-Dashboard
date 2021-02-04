@@ -1,1 +1,1 @@
-<a>{{$service_due}}</a>
+<div>{{$service_due}}</div>
