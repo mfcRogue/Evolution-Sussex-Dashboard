@@ -22,6 +22,7 @@ class ServiceRemindersSendByEmail extends Component
          $service_due = DB::table('vehicles')
          ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
          ->whereNotBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+         ->where('CustomerReference', '<>', 'INTERNAL')
          ->get();
          $count = 0;
          foreach($service_due as $vehicle_data)
@@ -44,7 +45,7 @@ class ServiceRemindersSendByEmail extends Component
                 ->where('Reference', '=', $vehicle_data->CustomerReference);
             })
              ->get();
-
+                
                 foreach($service_email_send as $ses)
                 {
                  $count++;

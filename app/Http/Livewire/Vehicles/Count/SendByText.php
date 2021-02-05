@@ -22,13 +22,14 @@ class SendByText extends Component
         }
         $service_due = DB::table('vehicles')
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereNotBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->where('CustomerReference', '<>', 'INTERNAL')
         ->get();
 
         $count = 0;
         
         foreach($service_due as $vehicle_data)
         {
-            //dump($vehicle_data->RegNo);
             $service_text_send = DB::table('customer')
             ->where('Reference', '=', $vehicle_data->CustomerReference)
             ->where('Str1', '<>', '')
