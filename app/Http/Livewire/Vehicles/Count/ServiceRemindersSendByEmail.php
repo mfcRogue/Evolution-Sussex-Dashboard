@@ -44,16 +44,12 @@ class ServiceRemindersSendByEmail extends Component
                 ->where('Reference', '=', $vehicle_data->CustomerReference);
             })
              ->get();
-             //dump($service_email_send);
 
-            // if($service_email_send == 1)
-            // {
                 foreach($service_email_send as $ses)
                 {
                  $count++;
                 }
-                
-             //}
+
          }
          $service_email_send = $count;
         return view('livewire.vehicles.count.service-reminders-send-by-email', ['service_email_send' => $service_email_send]);

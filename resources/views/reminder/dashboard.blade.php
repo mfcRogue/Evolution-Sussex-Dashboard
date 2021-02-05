@@ -39,7 +39,7 @@
     </div>
     <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
         <div class=" px-3 py-2  text-center">
-            <div class="font-bold text-xl mb-2"> 000 </div>
+            <div class="font-bold text-xl mb-2"><livewire:vehicles.count.service-reminders-send-by-post /></div>
             <p class="text-grey-darker text-base text-center">
             Send by Post
             </p>
