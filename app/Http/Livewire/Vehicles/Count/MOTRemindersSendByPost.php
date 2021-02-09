@@ -31,7 +31,7 @@ class MOTRemindersSendByPost extends Component
          {
              $mot_post_send = DB::table('customer')
              ->where('Reference', '=', $vehicle_data->CustomerReference)
-             ->where('Str1', '<>', '')
+             ->where('Str1', '=', '')
              ->where('Email', '=', '')
              ->where('Email2', '=', '')
              ->get();

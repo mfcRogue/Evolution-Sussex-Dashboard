@@ -1,0 +1,1 @@
+<div>{{$combined_email_send}}</div>
