@@ -1,3 +1,1 @@
-<div>{{$service_text_send}}</div>    
-
-
+<div>{{$service_text_send}}</div>
