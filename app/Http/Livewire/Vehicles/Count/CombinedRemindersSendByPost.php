@@ -21,7 +21,7 @@ class CombinedRemindersSendByPost extends Component
               $year = date('Y', strtotime(now()));
           }
           $combined_due = DB::table('vehicles')
-          ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+          ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
           ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
           ->where('CustomerReference', '<>', 'INTERNAL')
           ->get();
@@ -36,6 +36,8 @@ class CombinedRemindersSendByPost extends Component
               ->where('Email', '=', '')
               ->where('Email2', '=', '')
               ->get();
+              
+
               foreach($combined_post_send as $ses)
               {
                $count++;

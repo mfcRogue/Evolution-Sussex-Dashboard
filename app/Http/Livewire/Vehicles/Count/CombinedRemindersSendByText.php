@@ -38,6 +38,7 @@ class CombinedRemindersSendByText extends Component
                       foreach($combined_text_send as $ses)
                       {
                        $count++;
+                       //dump($ses->Reference);
                       }
                   }
                   $combined_text_send = $count;
