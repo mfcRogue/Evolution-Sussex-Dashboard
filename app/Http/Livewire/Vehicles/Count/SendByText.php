@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Livewire\Vehicles\Count;
-use Illuminate\Support\Facades\DB;
-
 
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 
 class SendByText extends Component
 {
