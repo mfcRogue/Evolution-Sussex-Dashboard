@@ -59,7 +59,7 @@
     </div>
     <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
         <div class= "px-3 py-2  text-center">
-            <div class="font-bold text-xl mb-2"><livewire:vehicles.count.over-due-service-reminders /></div>
+            <div class="font-bold text-xl mb-2"><livewire:vehicles.count.m-o-t-overdue-reminders /></div>
             <p class="text-grey-darker text-base text-center">
             Overdue
             </p>
@@ -103,7 +103,7 @@
     </div>
     <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
         <div class= "px-3 py-2  text-center">
-            <div class="font-bold text-xl mb-2"><livewire:vehicles.count.over-due-service-reminders /></div>
+            <div class="font-bold text-xl mb-2"><livewire:vehicles.count.combined-overdue-reminders /></div>
             <p class="text-grey-darker text-base text-center">
             Overdue
             </p>
