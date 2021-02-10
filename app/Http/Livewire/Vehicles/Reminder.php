@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Vehicles;
 
 use Livewire\Component;
 
+
 class Reminder extends Component
 {
     public function render()
@@ -18,6 +19,12 @@ class Reminder extends Component
         {
             $year = date('Y', strtotime(now()));
         }
+
+
+
+foreach ($post->RegNo as $Regno) {
+    echo"$Regno";
+}
         return view('livewire.vehicles.reminder', ['year' => $year]);
     }
 }

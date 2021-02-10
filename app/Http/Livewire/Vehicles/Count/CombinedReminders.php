@@ -4,11 +4,13 @@ namespace App\Http\Livewire\Vehicles\Count;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use App\Models\Vehicle;
 
 class CombinedReminders extends Component
 {
     public function render()
     {
+
        //get month +1
         $month = date('m', strtotime(now()->addMonth()));
         //if month is december next year is required
@@ -20,12 +22,17 @@ class CombinedReminders extends Component
         {
             $year = date('Y', strtotime(now()));
         }
-            $count =0;
-            $combined_due = DB::table('vehicles')
-            ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-            ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-            ->where('CustomerReference', '<>', 'INTERNAL')
-            ->count();
+        
+       $vehicle = Vehicle::all()
+       ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+       ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+       ->where('CustomerReference', '<>', 'INTERNAL')->count();
+            //$count =0;
+            //*$combined_due = DB::table('vehicles')
+            //->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+            //->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+            //->where('CustomerReference', '<>', 'INTERNAL')
+            //->count();
         
             //** debug only */
             /* $combined_due_get = DB::table('vehicles')
@@ -47,6 +54,6 @@ class CombinedReminders extends Component
             */
 
 
-        return view('livewire.vehicles.count.combined-reminders', ['combined_due'=>$combined_due]);
+        return view('livewire.vehicles.count.combined-reminders', ['combined_due'=>$vehicle]);
     }
 }

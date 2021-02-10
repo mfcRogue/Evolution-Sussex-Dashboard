@@ -4,6 +4,13 @@
             {{ __('Reminder System') }}
         </h2>
     </x-slot>
+    <div class="flex items-stretch flex-wrap">
+    <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
+        <div class="px-3 py-2  text-center">
+            <div class="font-bold text-xl mb-2">Service Reminders</div>
+        </div>
+    </div>
+    </div>
 <div class="flex items-stretch flex-wrap">
     <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
         <div class="px-3 py-2  text-center">
@@ -46,7 +53,13 @@
         </div>
     </div>
 </div>
-
+    <div class="flex items-stretch flex-wrap">
+    <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
+        <div class="px-3 py-2  text-center">
+            <div class="font-bold text-xl mb-2">MOT Reminders</div>
+        </div>
+    </div>
+    </div>
 
 <div class="flex items-stretch flex-wrap">
     <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
@@ -91,7 +104,13 @@
     </div>
 </div>
 
-
+    <div class="flex items-stretch flex-wrap">
+    <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
+        <div class="px-3 py-2  text-center">
+            <div class="font-bold text-xl mb-2">Combined Reminders</div>
+        </div>
+    </div>
+    </div>
 <div class="flex items-stretch flex-wrap">
     <div class="flex-grow rounded overflow-hidden shadow-lg my-2 bg-gray-50 m-2">
         <div class="px-3 py-2  text-center">
@@ -134,4 +153,6 @@
         </div>
     </div>
 </div>
+
+
 </x-app-layout>
