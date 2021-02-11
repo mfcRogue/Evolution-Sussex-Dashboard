@@ -9,10 +9,11 @@ class Vehicle extends Model
 {
     use HasFactory;
     protected $table = 'vehicles';
-  
+    protected $primaryKey = 'VehicleID';
+   
     public function customer()
     {
-        return $this->belongsTo(Customer::class,  'Reference', 'CustomerRefernce');
+        return $this->belongsTo(Customer::class,  'Reference', 'CustomerReference');
     }
 
 }

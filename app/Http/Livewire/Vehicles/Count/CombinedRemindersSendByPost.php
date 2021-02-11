@@ -3,7 +3,10 @@
 namespace App\Http\Livewire\Vehicles\Count;
 
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\Vehicle;
+use App\Models\Customer;
+
 
 
 class CombinedRemindersSendByPost extends Component
@@ -20,30 +23,16 @@ class CombinedRemindersSendByPost extends Component
           {
               $year = date('Y', strtotime(now()));
           }
-          $combined_due = DB::table('vehicles')
-          ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-          ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-          ->where('CustomerReference', '<>', 'INTERNAL')
-          ->get();
-  
-          $count = 0;
-          
-          foreach($combined_due as $vehicle_data)
-          {
-              $combined_post_send = DB::table('customer')
-              ->where('Reference', '=', $vehicle_data->CustomerReference)
-              ->where('Str1', '=', '')
-              ->where('Email', '=', '')
-              ->where('Email2', '=', '')
-              ->get();
-              
-
-              foreach($combined_post_send as $ses)
-              {
-               $count++;
-              }
-          }
-          $combined_post_send = $count;
+          $combined_post_send = Customer::whereHas('vehicle', function (Builder $query) use($year, $month)  {
+            $query
+            ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+            ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+            ->where('Reference', '<>', 'INTERNAL')
+            ->where('Email', '<>', '')
+            ->where('Email2', '<>', '')
+            ->where('Str1', '<>', '');
+        })->count();
+        
         return view('livewire.vehicles.count.combined-reminders-send-by-post', ['combined_post_send'=>$combined_post_send]);
     }
 }
