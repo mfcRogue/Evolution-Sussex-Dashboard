@@ -19,7 +19,7 @@ class ServiceRemindersSendByPost extends Component
         {
             $year = date('Y', strtotime(now()));
         }
-        $service_due = DB::table('vehicles')
+      /*  $service_due = DB::table('vehicles')
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->whereNotBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->where('CustomerReference', '<>', 'INTERNAL')
@@ -40,7 +40,8 @@ class ServiceRemindersSendByPost extends Component
              $count++;
             }
         }
-        $service_post_send = $count;
+        */
+        $service_post_send = 0;
         return view('livewire.vehicles.count.service-reminders-send-by-post',  ['service_post_send' => $service_post_send]);
     }
 }

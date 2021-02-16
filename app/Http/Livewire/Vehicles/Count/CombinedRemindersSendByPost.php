@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\Vehicle;
 use App\Models\Customer;
 
-
-
 class CombinedRemindersSendByPost extends Component
 {
     public function render()

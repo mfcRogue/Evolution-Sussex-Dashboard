@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Customer;
+
 class Vehicle extends Model
 {
     use HasFactory;
@@ -13,7 +15,7 @@ class Vehicle extends Model
    
     public function customer()
     {
-        return $this->belongsTo(Customer::class,  'Reference', 'CustomerReference');
+        return $this->belongsTo('app\Models\Customer',  'Reference', 'CustomerReference');
     }
 
 }

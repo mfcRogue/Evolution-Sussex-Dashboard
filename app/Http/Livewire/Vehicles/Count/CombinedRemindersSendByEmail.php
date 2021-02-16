@@ -48,7 +48,7 @@ class CombinedRemindersSendByEmail extends Component
                 ->where('Email2', '<>', '');
             });
         })->count();
-        
+
         return view('livewire.vehicles.count.combined-reminders-send-by-email', ['combined_email_send'=>$combined_email_send]);
     }
 }

@@ -19,7 +19,7 @@ class SendByText extends Component
         {
             $year = date('Y', strtotime(now()));
         }
-        $service_due = DB::table('vehicles')
+        /*$service_due = DB::table('vehicles')
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->whereNotBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->where('CustomerReference', '<>', 'INTERNAL')
@@ -39,8 +39,8 @@ class SendByText extends Component
             {
              $count++;
             }
-        }
-        $service_text_send = $count;
+        }*/
+        $service_text_send = 0;
         return view('livewire.vehicles.count.send-by-text', ['service_text_send' => $service_text_send]);
     }
 }

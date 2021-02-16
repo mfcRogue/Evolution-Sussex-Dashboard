@@ -19,7 +19,7 @@ class MOTRemindersSendByEmail extends Component
         {
             $year = date('Y', strtotime(now()));
         }
-        $mot_due = DB::table('vehicles')
+       /* $mot_due = DB::table('vehicles')
         ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->where('CustomerReference', '<>', 'INTERNAL')
@@ -52,7 +52,8 @@ class MOTRemindersSendByEmail extends Component
             }
 
         }
-        $mot_email_send = $count;
+        */
+        $mot_email_send = 0;
     return view('livewire.vehicles.count.m-o-t-reminders-send-by-email', ['mot_email_send' =>$mot_email_send]);
     }
 }
