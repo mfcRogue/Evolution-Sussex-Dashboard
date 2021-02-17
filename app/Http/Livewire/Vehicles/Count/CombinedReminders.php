@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Vehicles\Count;
 use Livewire\Component;
 //use Illuminate\Support\Facades\DB;
 use App\Models\Vehicle;
+use App\Models\Customer;
 
 class CombinedReminders extends Component
 {
@@ -23,10 +24,14 @@ class CombinedReminders extends Component
             $year = date('Y', strtotime(now()));
         }
         
-       $vehicle = Vehicle::all()
-       ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-       ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-       ->where('CustomerReference', '<>', 'INTERNAL')->count();
+
+        $vehicle = Vehicle::has('Customer')
+        ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->count();
+
+
+        //$vehicle = 79;
 
         return view('livewire.vehicles.count.combined-reminders', ['combined_due'=>$vehicle]);
     }

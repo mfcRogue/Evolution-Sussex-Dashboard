@@ -13,9 +13,9 @@ class Customer extends Model
     protected $table = 'customer';
     protected $primaryKey = 'CustomerID';
  
-    public function vehicle()
+    public function Vehicle()
     {
-        return $this->hasMany('app\Models\Vehicle',  'CustomerReference', 'Reference');
+        return $this->hasMany(Vehicle::class,  'Reference', 'CustomerReference');
     }
 
 }

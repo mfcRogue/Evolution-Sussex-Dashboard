@@ -3,7 +3,9 @@
 namespace App\Http\Livewire\Vehicles\Count;
 
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
+//use Illuminate\Support\Facades\DB;
+use App\Models\Vehicle;
+
 
 class MOTReminders extends Component
 {
@@ -20,11 +22,14 @@ class MOTReminders extends Component
     {
         $year = date('Y', strtotime(now()));
     }
-        $mot_due = DB::table('vehicles')
+
+        /*$mot_due = Vehicle::all()
         ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->where('CustomerReference', '<>', 'INTERNAL')
-        ->count();
+        ->count(); 
+        */
+        $mot_due = 0;
         return view('livewire.vehicles.count.m-o-t-reminders', ['mot_due' => $mot_due]);
     }
 }

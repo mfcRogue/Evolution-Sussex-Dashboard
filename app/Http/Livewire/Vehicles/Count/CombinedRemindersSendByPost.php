@@ -21,7 +21,7 @@ class CombinedRemindersSendByPost extends Component
           {
               $year = date('Y', strtotime(now()));
           }
-          $combined_post_send = Customer::whereHas('vehicle', function (Builder $query) use($year, $month)  {
+         /* $combined_post_send = Customer::whereHas('vehicle', function (Builder $query) use($year, $month)  {
             $query
             ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
@@ -30,6 +30,8 @@ class CombinedRemindersSendByPost extends Component
             ->where('Email2', '<>', '')
             ->where('Str1', '<>', '');
         })->count();
+        */
+        $combined_post_send = 0;
         
         return view('livewire.vehicles.count.combined-reminders-send-by-post', ['combined_post_send'=>$combined_post_send]);
     }

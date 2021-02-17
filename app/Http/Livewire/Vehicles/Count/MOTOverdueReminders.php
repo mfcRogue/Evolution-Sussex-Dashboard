@@ -20,10 +20,13 @@ class MOTOverdueReminders extends Component
         {
             $year = date('Y', strtotime(now()));
         }
+        /*
         $mot_overdue = DB::table('vehicles')
         ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->count();
+        */
+        $mot_overdue = 0;
         return view('livewire.vehicles.count.m-o-t-overdue-reminders', ['mot_overdue'=>$mot_overdue]);
     }
 }

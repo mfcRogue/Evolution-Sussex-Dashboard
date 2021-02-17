@@ -13,9 +13,9 @@ class Vehicle extends Model
     protected $table = 'vehicles';
     protected $primaryKey = 'VehicleID';
    
-    public function customer()
+    public function Customer()
     {
-        return $this->belongsTo('app\Models\Customer',  'Reference', 'CustomerReference');
+        return $this->belongsTo(Customer::class,  'CustomerReference', 'Reference');
     }
 
 }

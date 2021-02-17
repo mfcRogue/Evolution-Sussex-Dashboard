@@ -20,11 +20,13 @@ class CombinedOverdueReminders extends Component
         {
             $year = date('Y', strtotime(now()));
         }
+        /*
         $combined_overdue = Vehicle::all()
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->where('CustomerReference', '<>', 'INTERNAL')->count();
-        
+        */
+        $combined_overdue = 0;
         return view('livewire.vehicles.count.combined-overdue-reminders', ['combined_overdue'=>$combined_overdue]);
     }
 }

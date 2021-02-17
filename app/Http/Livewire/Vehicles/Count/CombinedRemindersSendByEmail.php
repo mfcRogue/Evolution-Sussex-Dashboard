@@ -23,7 +23,7 @@ class CombinedRemindersSendByEmail extends Component
         {
             $year = date('Y', strtotime(now()));
         }
-
+        /*
         $combined_email_send = Customer::whereHas('vehicle', function (Builder $query) use($year, $month)  {
             $query
             ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
@@ -48,7 +48,8 @@ class CombinedRemindersSendByEmail extends Component
                 ->where('Email2', '<>', '');
             });
         })->count();
-
+        */
+        $combined_email_send = 0;
         return view('livewire.vehicles.count.combined-reminders-send-by-email', ['combined_email_send'=>$combined_email_send]);
     }
 }
