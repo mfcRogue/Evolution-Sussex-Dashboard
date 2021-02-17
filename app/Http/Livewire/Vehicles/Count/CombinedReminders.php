@@ -26,9 +26,24 @@ class CombinedReminders extends Component
         
 
         $vehicle = Vehicle::has('Customer')
+    
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->count();
+        
+        //dd($vehicle);
+        //$count = 0;
+        //foreach($vehicle as $veh_data)
+        //{
+        //    $vehicle= $count++;
+        //}
+        
+            
+            
+            //dd($veh_data->customer->Reference);        
+        //dd($vehicle);
+
+
 
 
         //$vehicle = 79;

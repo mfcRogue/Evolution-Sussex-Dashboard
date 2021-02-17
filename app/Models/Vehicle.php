@@ -15,7 +15,9 @@ class Vehicle extends Model
    
     public function Customer()
     {
-        return $this->belongsTo(Customer::class,  'CustomerReference', 'Reference');
+
+        return $this->belongsTo(Customer::class,  'CustomerReference', 'Reference')
+        ->where('Reference', '<>', 'INTERNAL');
     }
 
 }

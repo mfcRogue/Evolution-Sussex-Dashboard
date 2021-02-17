@@ -23,33 +23,25 @@ class CombinedRemindersSendByEmail extends Component
         {
             $year = date('Y', strtotime(now()));
         }
-        /*
-        $combined_email_send = Customer::whereHas('vehicle', function (Builder $query) use($year, $month)  {
-            $query
-            ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-            ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-            ->where('Reference', '<>', 'INTERNAL')
-            ->where('Email', '<>', '')
-            ->where('Email2', '<>', '')
-            ->orWhere(function($query) use ($year, $month) {
-                $query
-                ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-                ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-                ->where('Reference', '<>', 'INTERNAL')
-                ->where('Email', '<>', '')
-                ->where('Email2', '=', '');
-            })
-            ->orWhere(function($query) use ($year, $month) {
-                $query
-                ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-                ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-                ->where('Reference', '<>', 'INTERNAL')
-                ->where('Email', '=', '')
-                ->where('Email2', '<>', '');
-            });
-        })->count();
-        */
+
+        $vehicle = Vehicle::has('Customer')
+        ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->where('CustomerReference', '<>', 'INTERNAL')
+        //->get();
+        
         $combined_email_send = 0;
+        foreach($vehicle as $veh_data)
+        {
+            
+            $cust_email = $veh_data->customer['Email'];
+            $cust_email2 = $veh_data->customer['Email2'];
+            if($cust_email <> '' or $cust_email2 <> '')
+            {
+                $combined_email_send++;
+            }
+       
+        }
         return view('livewire.vehicles.count.combined-reminders-send-by-email', ['combined_email_send'=>$combined_email_send]);
     }
 }

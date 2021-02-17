@@ -15,7 +15,20 @@ class Customer extends Model
  
     public function Vehicle()
     {
-        return $this->hasMany(Vehicle::class,  'Reference', 'CustomerReference');
+        $month = date('m', strtotime(now()->addMonth()));
+        if($month == 12)
+        {
+            $year = date('Y', strtotime(now()->addYear()));    
+        }
+        else
+        {
+            $year = date('Y', strtotime(now()));
+        }
+        return $this->hasMany(Vehicle::class,  'Reference', 'CustomerReference')
+        ->where('Reference', '<>', 'INTERNAL')
+        ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ;
     }
 
 }
