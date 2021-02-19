@@ -27,6 +27,7 @@ Route::get('/dashboard', function () {
 
 //reminder system
 Route::get('/reminder/dashboard',  [ReminderController::class, 'index'])->name('reminder.dashboard')->middleware(['auth']);
+Route::get('/reminder/dashboard/list/due/{month}',  [ReminderController::class, 'list_due'])->name('reminder.list.due')->middleware(['auth']);
 
 
 require __DIR__.'/auth.php';

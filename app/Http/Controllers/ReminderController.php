@@ -194,6 +194,7 @@ class ReminderController extends Controller
         // Post Due - joined query with `customers` - Where emails and Str (Mobile) are all blank
         //
         */
+
         //get  service due datesfor next month
         $service_count_due = DB::table('vehicles')
         //->join('customers', 'CustomerReference', '=', 'Reference')
@@ -265,7 +266,7 @@ class ReminderController extends Controller
             ->count();
         
 
-        return view('reminder.dashboard', ['combined_count_due' => $combined_count_due, 'combined_count_due_email'=> $combined_count_due_email, 'combined_count_due_sms'=>$combined_count_due_sms, 'combined_count_due_post'=>$combined_count_due_post, 'combined_count_due_overdue'=>$combined_count_due_overdue, 'mot_count_due' => $mot_count_due, 'mot_count_due_email'=> $mot_count_due_email, 'mot_count_due_sms'=>$mot_count_due_sms, 'mot_count_due_post'=>$mot_count_due_post, 'mot_count_due_overdue'=>$mot_count_due_overdue, 'service_count_due' => $service_count_due, 'service_count_due_email'=> $service_count_due_email, 'service_count_due_sms'=>$service_count_due_sms, 'service_count_due_post'=>$service_count_due_post, 'service_count_due_overdue'=>$service_count_due_overdue]);
+        return view('reminder.dashboard', ['combined_count_due' => $combined_count_due, 'combined_count_due_email'=> $combined_count_due_email, 'combined_count_due_sms'=>$combined_count_due_sms, 'combined_count_due_post'=>$combined_count_due_post, 'combined_count_due_overdue'=>$combined_count_due_overdue, 'mot_count_due' => $mot_count_due, 'mot_count_due_email'=> $mot_count_due_email, 'mot_count_due_sms'=>$mot_count_due_sms, 'mot_count_due_post'=>$mot_count_due_post, 'mot_count_due_overdue'=>$mot_count_due_overdue, 'service_count_due' => $service_count_due, 'service_count_due_email'=> $service_count_due_email, 'service_count_due_sms'=>$service_count_due_sms, 'service_count_due_post'=>$service_count_due_post, 'service_count_due_overdue'=>$service_count_due_overdue, 'month'=>$month_next]);
     }
 
     /**
@@ -297,8 +298,21 @@ class ReminderController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $month
+     * @return \Illuminate\Http\Response
+     */
+    public function list_due($month)
+    {
+
+        return view('reminder.list_due', ['month'=>$month]);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
