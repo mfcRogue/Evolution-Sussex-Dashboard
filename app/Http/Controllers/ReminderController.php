@@ -309,8 +309,24 @@ class ReminderController extends Controller
      */
     public function list_due($month)
     {
+        if($month == 12)
+        {
+            $year = date('Y', strtotime(now()->addYear()));    
+        }
+        else
+        {
+            $year = date('Y', strtotime(now()));
+        }
+        
+        $combined_data_due = DB::table('vehicles')
+        ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title')
+        ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->where('CustomerReference', '<>', 'INTERNAL')
+        ->join('customers', 'CustomerReference', '=', 'Reference')
+        ->get();
 
-        return view('reminder.list_due', ['month'=>$month]);
+        return view('reminder.list_due', ['month'=>$month, 'combined_data_due'=>$combined_data_due]);
     }
 
 
