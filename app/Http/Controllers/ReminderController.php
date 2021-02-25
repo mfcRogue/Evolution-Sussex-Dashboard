@@ -309,9 +309,13 @@ class ReminderController extends Controller
      */
     public function list_due($month)
     {
-        //$year = date('Y', strtotime(now()));
-        $year = 2020;
+        //** get current year**//
+        // to do 
+        // Make date more flexible to help next year during Dec / Jan
+        //* *// 
+        $year = date('Y', strtotime(now()));
         
+        //** combined list **//
         $combined_data_due = DB::table('vehicles')
         ->select('RegNo','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title')
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
@@ -319,6 +323,8 @@ class ReminderController extends Controller
         ->where('CustomerReference', '<>', 'INTERNAL')
         ->join('customers', 'CustomerReference', '=', 'Reference')
         ->get();
+
+        //** service only list **//
         $service_data_due = DB::table('vehicles')
         ->select('RegNo', 'ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title')
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
@@ -326,6 +332,8 @@ class ReminderController extends Controller
         ->where('CustomerReference', '<>', 'INTERNAL')
         ->join('customers', 'CustomerReference', '=', 'Reference')
         ->get();
+
+        //** mot  only list **//
         $mot_data_due = DB::table('vehicles')
         ->select('RegNo', 'ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title')
         ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
@@ -333,7 +341,6 @@ class ReminderController extends Controller
         ->where('CustomerReference', '<>', 'INTERNAL')
         ->join('customers', 'CustomerReference', '=', 'Reference')
         ->get();
-
 
         return view('reminder.list_due', ['month'=>$month, 'combined_data_due'=>$combined_data_due, 'service_data_due'=>$service_data_due, 'mot_data_due'=>$mot_data_due]);
     }
