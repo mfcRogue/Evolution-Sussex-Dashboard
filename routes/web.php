@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\SMSController;
 
 
 /*
@@ -29,5 +30,8 @@ Route::get('/dashboard', function () {
 Route::get('/reminder/dashboard',  [ReminderController::class, 'index'])->name('reminder.dashboard')->middleware(['auth']);
 Route::get('/reminder/dashboard/list/due/{month}',  [ReminderController::class, 'list_due'])->name('reminder.list.due')->middleware(['auth']);
 
+
+//SMS System
+Route::get('/sms/test',  [SMSController::class, 'test'])->name('sms.test')->middleware(['auth']);
 
 require __DIR__.'/auth.php';
