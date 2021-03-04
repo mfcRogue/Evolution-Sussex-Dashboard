@@ -33,5 +33,9 @@ Route::get('/reminder/dashboard/list/due/{month}',  [ReminderController::class, 
 
 //SMS System
 Route::get('/sms/test',  [SMSController::class, 'test'])->name('sms.test')->middleware(['auth']);
+Route::get('/sms/dashboard',  [SMSController::class, 'dashboard'])->name('sms.dashboard')->middleware(['auth']);
+Route::get('/sms/new',  [SMSController::class, 'new'])->name('sms.new')->middleware(['auth']);
+
+Route::get('/sms/recieve',  [SMSController::class, 'recieve'])->name('sms.recieve');
 
 require __DIR__.'/auth.php';
