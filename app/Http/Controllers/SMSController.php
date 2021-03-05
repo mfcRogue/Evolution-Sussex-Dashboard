@@ -16,12 +16,7 @@ class SMSController extends Controller
     public function dashboard()
     {
         $sms_active = DB::table('conversations')
-        ->select('conversations.archived', 'conversations.created', 'conversations.number', 'conversations.updated')
-        ->join('messages', 'conversations.number', '=', 'messages.number')
-        //
-        //@@ Issue string in customers has space after inital code 
-        //@@ Can't find away to alter for the time
-        //->join('customers', 'conversations.number', '=', 'customers.Str1')
+        ->select('archived', 'created', 'number', 'updated', 'id')
         ->whereNull('conversations.archived')
         ->get();
         return view('sms.dashboard', ['sms_active'=>$sms_active]);
@@ -92,6 +87,17 @@ class SMSController extends Controller
          'nexmo_id'=>  $request->messageId
          ]
      );
+
+    }
+
+    public function archive($id)
+    {
+        $affected = DB::table('conversations')
+        ->where('id', $id)
+        ->update(['archived' => now()
+        ]);
+        
+        return redirect()->route('sms.dashboard')->with('status', 'Conversation Archived');
 
     }
 }
