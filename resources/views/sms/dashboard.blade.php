@@ -44,7 +44,7 @@
     @endif
    <td>{{$sms_records->number}}</td>
    <td>{{$sms_records->number}}</td>
-   <td>{{date('d-m-Y', strtotime($sms_records->updated))}}</td>
+   <td>{{date('d-m-Y H:i', strtotime($sms_records->updated))}}</td>
    <td>Edit | Archive</td>
    @endforeach
   </tbody>

@@ -30,13 +30,43 @@ class SMSController extends Controller
     {
         return view('sms.new');
     } 
-    public function test()
+    public function send(Request $request)
     {
-    /*Nexmo::message()->send([
-        'to'   => '447876438542',
-        'from' => '447507332161',
-        'text' => 'Using the facade to send a message.'
-    ]);*/
+        //validate data
+        //ensure both fields are filled out 
+        //ensure number starts with 07 and 11 digits long
+        $validatedData = $request->validate([
+            'number' => 'required|starts_with:07|digits:11',
+            'message' => 'required',
+        ]);
+        //remove leading 0
+        $numberStripped = substr($request->number, 1);
+        //add 44 required for Nexmo API
+        $validNumber= "44$numberStripped";
+        //once validated, push to Nexmo Function
+
+        Nexmo::message()->send([
+            'to'   => $validNumber,
+            'from' => '447507332161',
+            'text' => $request->message
+        ]);
+
+        DB::table('messages')->insert(
+            [
+            'number' => $request->number,
+            'message' => $request->message,
+            'created' => now(),
+            'user' => $request->user()->id,
+            'nexmo_id'=>$message['message-id']
+            ]
+        );
+        //create or update conversation
+        DB::table('conversations')
+        ->updateOrInsert(
+            ['number' => $request->number],
+            ['number' => $request->number, 'updated' => now(), 'archived' => null]
+        );
+        return redirect('sms/dashboard');
     }
 
     public function recieve(Request $request)
