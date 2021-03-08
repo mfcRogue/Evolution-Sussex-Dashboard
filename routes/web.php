@@ -41,6 +41,8 @@ Route::post('/sms/send',  [SMSController::class, 'send'])->name('sms.send')->mid
 Route::get('/sms/archive/{id}',  [SMSController::class, 'archive'])->name('sms.archive')->middleware(['auth']);
 Route::get('/sms/view/{id}',  [SMSController::class, 'archive'])->name('sms.view')->middleware(['auth']);
 
+Route::get('/sms/archived',  [SMSController::class, 'archived'])->name('sms.archived')->middleware(['auth']);
+
 
 //external api auth route
 Route::get('/sms/recieve',  [SMSController::class, 'recieve'])->name('sms.recieve');

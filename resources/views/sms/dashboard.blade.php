@@ -1,32 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('SMS System') }}
-        </h2>
-        <div class="flex">
-        <!-- Reminder Navigation -->
-                <div class="flex-shrink-0 flex items-center">
-                    <x-nav-link :href="route('sms.dashboard')" :active="request()->routeIs('sms.dashboard')">
-                     {{ __('Active Conversations') }}
-                    </x-nav-link>
-                </div>
-                <div class="flex-shrink-0 flex items-center">
-                    <x-nav-link :href="route('sms.dashboard')" :active="request()->routeIs('sms.dashboard')">
-                     {{ __('Archived Conversations') }}
-                    </x-nav-link>
-                </div>
-                <div class="flex-shrink-0 flex items-center">
-                    <x-nav-link :href="route('sms.new')" :active="request()->routeIs('sms.new')">
-                     {{ __('New Message') }}
-                    </x-nav-link>
-                </div>
-    </x-slot>
-
-    @if (session('status'))
-    <div class="min-w-full p-2.5 bg-green-500 text-center content-center text-white">
-        {{ session('status') }}
-    </div>
-    @endif
+@include('partials.sms-nav')
 
     <div class="flex m-1  text-center  flex-wrap content-evenly">
     <div class="flex-auto bg-gray-50 p-6 shadow-md rounded">

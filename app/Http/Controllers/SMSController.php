@@ -100,4 +100,10 @@ class SMSController extends Controller
         return redirect()->route('sms.dashboard')->with('status', 'Conversation Archived');
 
     }
+
+    public function archived()
+    {
+        return redirect()->route('sms.dashboard')->with('status', 'Conversation Archived');
+
+    }
 }
