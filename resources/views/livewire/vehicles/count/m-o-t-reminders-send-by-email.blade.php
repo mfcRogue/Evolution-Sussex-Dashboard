@@ -1,1 +1,0 @@
-<div>{{$mot_email_send}}</div>

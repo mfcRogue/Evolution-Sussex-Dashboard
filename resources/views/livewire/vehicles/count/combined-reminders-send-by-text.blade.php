@@ -1,1 +1,0 @@
-<div>{{$combined_text_send}}</div>
