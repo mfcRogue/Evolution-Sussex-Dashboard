@@ -97,13 +97,27 @@ class SMSController extends Controller
         ->update(['archived' => now()
         ]);
         
-        return redirect()->route('sms.dashboard')->with('status', 'Conversation Archived');
+        return redirect()->back()->with('status', 'Conversation Archived');
 
     }
 
+    public function relive($id)
+    {
+        $affected = DB::table('conversations')
+        ->where('id', $id)
+        ->update(['archived' => null
+        ]);
+        
+        return redirect()->back()->with('status', 'Conversation Now Active');
+    }
+
+
     public function archived()
     {
-        return redirect()->route('sms.dashboard')->with('status', 'Conversation Archived');
-
+        $sms_active = DB::table('conversations')
+        ->select('archived', 'created', 'number', 'updated', 'id')
+        ->whereNotnull('conversations.archived')
+        ->get();
+        return view('sms.archived', ['sms_active'=>$sms_active]);
     }
 }

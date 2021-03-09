@@ -33,15 +33,25 @@ Route::get('/reminder/dashboard/list/due/{month}',  [ReminderController::class, 
 
 //SMS System
 Route::get('/sms/test',  [SMSController::class, 'test'])->name('sms.test')->middleware(['auth']);
-Route::get('/sms/dashboard',  [SMSController::class, 'dashboard'])->name('sms.dashboard')->middleware(['auth']);
 
+//list + archived dashboards
+Route::get('/sms/dashboard',  [SMSController::class, 'dashboard'])->name('sms.dashboard')->middleware(['auth']);
+Route::get('/sms/archived',  [SMSController::class, 'archived'])->name('sms.archived')->middleware(['auth']);
+
+//new form + post form send and validation
 Route::get('/sms/new',  [SMSController::class, 'new'])->name('sms.new')->middleware(['auth']);
 Route::post('/sms/send',  [SMSController::class, 'send'])->name('sms.send')->middleware(['auth']);
 
+
+//archive + relive switch
 Route::get('/sms/archive/{id}',  [SMSController::class, 'archive'])->name('sms.archive')->middleware(['auth']);
+Route::get('/sms/relive/{id}',  [SMSController::class, 'relive'])->name('sms.relive')->middleware(['auth']);
+
+//view conversation
 Route::get('/sms/view/{id}',  [SMSController::class, 'archive'])->name('sms.view')->middleware(['auth']);
 
-Route::get('/sms/archived',  [SMSController::class, 'archived'])->name('sms.archived')->middleware(['auth']);
+
+
 
 
 //external api auth route
