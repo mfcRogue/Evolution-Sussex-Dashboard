@@ -45,10 +45,10 @@ Route::post('/sms/send',  [SMSController::class, 'send'])->name('sms.send')->mid
 
 //archive + relive switch
 Route::get('/sms/archive/{id}',  [SMSController::class, 'archive'])->name('sms.archive')->middleware(['auth']);
-Route::get('/sms/relive/{id}',  [SMSController::class, 'relive'])->name('sms.relive')->middleware(['auth']);
+Route::get('/sms/activate/{id}',  [SMSController::class, 'activate'])->name('sms.activate')->middleware(['auth']);
 
 //view conversation
-Route::get('/sms/view/{id}',  [SMSController::class, 'archive'])->name('sms.view')->middleware(['auth']);
+Route::get('/sms/view/{id}',  [SMSController::class, 'view'])->name('sms.view')->middleware(['auth']);
 
 
 
