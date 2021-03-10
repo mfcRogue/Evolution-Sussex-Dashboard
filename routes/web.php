@@ -51,6 +51,6 @@ Route::get('/sms/activate/{id}',  [SMSController::class, 'activate'])->name('sms
 Route::get('/sms/view/{id}',  [SMSController::class, 'view'])->name('sms.view')->middleware(['auth']);
 
 //external api auth route
-Route::get('/sms/recieve',  [SMSController::class, 'recieve'])->name('sms.recieve');
+Route::post('/sms/recieve',  [SMSController::class, 'recieve'])->name('sms.recieve');
 
 require __DIR__.'/auth.php';
