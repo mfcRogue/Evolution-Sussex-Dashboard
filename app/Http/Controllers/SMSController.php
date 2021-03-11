@@ -106,6 +106,12 @@ class SMSController extends Controller
          ]
      );
 
+     DB::table('conversations')
+     ->updateOrInsert(
+         ['number' => $validNumber],
+         ['number' => $validNumber, 'updated' => now(), 'archived' => null]
+     );
+
     }
 
     //Archive sets the conversation selected to archive mode
@@ -143,12 +149,11 @@ class SMSController extends Controller
     public function view()
     {
         $sms_messages = DB::table('conversations')
-        ->select('conversations.archived', 'conversations.created', 'conversations.number', 'conversations.updated', 'conversations.id', 'messages.message', 'messages.user')
+        ->select('conversations.archived', 'messages.created', 'conversations.number', 'conversations.updated', 'conversations.id', 'messages.message', 'messages.user')
         ->join('messages', 'conversations.number','=', 'messages.number')
         ->orderBy('messages.created', 'desc')
         ->paginate(5);
         //->get();
-        
         return view('sms.view', ['sms_messages'=>$sms_messages]);
     }
 }
