@@ -92,17 +92,17 @@ class SMSController extends Controller
     {
 
      //remove leading 44
-     $numberStripped = substr($request->msisdn, 2);
+     $numberStripped = substr($request->query('msisdn'), 2);
      //replace with 0
      $validNumber= "0$numberStripped";
      //insert into DB
      DB::table('messages')->insert(
          [
          'number' =>  $validNumber,
-         'message' => $request->text,
+         'message' => $request->query('text'),
          'created' => now(),
          'user' => '0',
-         'nexmo_id'=>  $request->messageId
+         'nexmo_id'=>  $request->query('messageId')
          ]
      );
 
