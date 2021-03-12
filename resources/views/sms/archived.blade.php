@@ -26,7 +26,7 @@
    <td>{{date('d-m-Y H:i', strtotime($sms_records->updated))}}</td>
    <td>
     <a href="{{route('sms.view', ['id'=>$sms_records->id])}}" class="w-1/6 hover:bg-blue-300 bg-blue-600 border-2 border-blue-500 hover:border-blue-500 bg-transparent text-white hover:text-blue-600 py-1 px-2 font-semibold rounded-md"><i class="fas fa-eye"></i> View</a>
-    <a href="{{route('sms.activate', ['id'=>$sms_records->id])}}" class="w-1/6 hover:bg-green-300 bg-green-600 border-2 border-green-500 hover:border-green-500 bg-transparent text-white hover:text-green-600 py-1 px-2 font-semibold rounded-md"><i class="fas fa-box-open"></i></i> Make Live</a>
+    <a href="{{route('sms.activate', ['id'=>$sms_records->id])}}" class="w-1/6 hover:bg-green-300 bg-green-600 border-2 border-green-500 hover:border-green-500 bg-transparent text-white hover:text-green-600 py-1 px-2 font-semibold rounded-md"><i class="fas fa-box-open"></i></i> Activate</a>
    </td>
    @endforeach
   </tbody>
