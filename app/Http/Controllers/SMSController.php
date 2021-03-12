@@ -21,7 +21,9 @@ class SMSController extends Controller
         $sms_active = DB::table('conversations')
         ->select('archived', 'created', 'number', 'updated', 'id')
         ->whereNull('conversations.archived')
-        ->get();
+        ->orderBy('conversations.updated', 'desc')
+        ->paginate(10);
+
         return view('sms.dashboard', ['sms_active'=>$sms_active]);
     }
 
@@ -32,7 +34,8 @@ class SMSController extends Controller
         $sms_active = DB::table('conversations')
         ->select('archived', 'created', 'number', 'updated', 'id')
         ->whereNotnull('conversations.archived')
-        ->get();
+        ->orderBy('conversations.updated', 'desc')
+        ->paginate(10);
 
         return view('sms.archived', ['sms_active'=>$sms_active]);
     }
