@@ -4,8 +4,8 @@
 <form action="{{route('sms.send')}}" method="POST">
   @csrf
 
-    <div class="flex-auto bg-gray-50 p-6 shadow-md rounded">
-        <div class="flex m-2 space-x-4  text-center  flex-wrap content-evenly justify-center">
+    <div class="flex-auto bg-gray-50 p-6 rounded m-1">
+        <div class="flex space-x-4  text-center  flex-wrap content-evenly justify-center">
             Telephone Number
         </div>
         <div class="flex m-2 space-x-4  text-center  flex-wrap content-evenly justify-center">

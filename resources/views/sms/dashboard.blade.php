@@ -1,8 +1,8 @@
 <x-app-layout>
 @include('partials.sms-nav')
 
-    <div class="flex m-1  text-center  flex-wrap content-evenly">
-    <div class="flex-auto bg-gray-50 p-6 shadow-md rounded">
+<div class="shadow-md bg-gray-50">
+<div class="flex m-1 text-center  flex-wrap content-center flex-col"> 
 
     <table class="table-auto min-w-full divide-y divide-gray-200">
   <thead>
