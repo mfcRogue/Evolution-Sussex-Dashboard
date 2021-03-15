@@ -8,12 +8,12 @@
                 {{ __('Active Conversations') }}
             </x-nav-link>
         </div>
-    <div class="flex-shrink-0 flex items-center">
+    <div class="flex-shrink-0 flex items-center ml-4">
         <x-nav-link :href="route('sms.archived')" :active="request()->routeIs('sms.archived')">
             {{ __('Archived Conversations') }}
         </x-nav-link>
     </div>
-    <div class="flex-shrink-0 flex items-center">
+    <div class="flex-shrink-0 flex items-center ml-4">
         <x-nav-link :href="route('sms.new')" :active="request()->routeIs('sms.new')">
             {{ __('New Message') }}
         </x-nav-link>
