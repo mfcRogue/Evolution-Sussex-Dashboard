@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 //use Mail
 use Illuminate\Support\Facades\Mail;
-
+//mail template
 use App\Mail\InboundMessage;
 
 
