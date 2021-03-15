@@ -1,8 +1,8 @@
 <x-app-layout>
 @include('partials.sms-nav')
 
-<div class="shadow-md bg-gray-50">
-<div class="flex m-1 text-center  flex-wrap content-center flex-col"> 
+    <div class="flex m-1  text-center  flex-wrap content-evenly">
+    <div class="flex-auto bg-gray-50 p-6 shadow-md rounded">
 
     <table class="table-auto min-w-full divide-y divide-gray-200">
   <thead>
@@ -26,7 +26,7 @@
    <td>{{date('d-m-Y H:i', strtotime($sms_records->updated))}}</td>
    <td>
     <a href="{{route('sms.view', ['id'=>$sms_records->id])}}" class="w-1/6 hover:bg-blue-300 bg-blue-600 border-2 border-blue-500 hover:border-blue-500 bg-transparent text-white hover:text-blue-600 py-1 px-2 font-semibold rounded-md"><i class="fas fa-eye"></i> View</a>
-    <a href="{{route('sms.archive', ['id'=>$sms_records->id])}}" class="w-1/6 hover:bg-red-300 bg-red-600 border-2 border-red-500 hover:border-red-500 bg-transparent text-white hover:text-red-600 py-1 px-2 font-semibold rounded-md"><i class="fas fa-boxes"></i> Archive</a>
+    <a href="{{route('sms.activate', ['id'=>$sms_records->id])}}" class="w-1/6 hover:bg-green-300 bg-green-600 border-2 border-green-500 hover:border-green-500 bg-transparent text-white hover:text-green-600 py-1 px-2 font-semibold rounded-md"><i class="fas fa-box-open"></i></i> Activate</a>
    </td>
    @endforeach
   </tbody>
@@ -35,15 +35,19 @@
     </div>
 </div>
 
-@if ($sms_active->hasPages())
 
+@if ($sms_active->hasPages())
+  
 <div class="flex m-4 text-center  flex-wrap content-center flex-col">
 <div class="flex-auto bg-white text-gray-900 p-6 m-2 shadow-md rounded w-1/2 text-center">    
+
 {{ $sms_active->links() }}
+
 </div>
 </div>
 
 @endif
+
 
 
 </x-app-layout>

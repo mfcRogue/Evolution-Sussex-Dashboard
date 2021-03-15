@@ -4,7 +4,7 @@
 <div class="flex m-1  text-center  flex-wrap content-evenly">
     <div class="flex-auto bg-gray-50 p-6 shadow-md rounded">
         @for ($i = 1; $i < 13; $i++)
-        <x-nav-link :href="route('reminder.list.due', ['month'=>$i])">
+          <x-nav-link :href="route('reminder.list.due', ['month'=>$i])" active="request()->routeIs('reminder.list.due', ['month'=> $i])">
             {{ date('F', strtotime('2020-'. $i)) }}
         </x-nav-link>
         @endfor

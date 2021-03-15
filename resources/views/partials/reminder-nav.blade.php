@@ -9,7 +9,7 @@
                     {{ __('Reminder Dashboard') }}
                 </x-nav-link>
             </div>
-                <div class="flex-shrink-0 flex items-center">
+                <div class="flex-shrink-0 flex items-center  ml-4">
                 <x-nav-link :href="route('reminder.list.due', ['month'=>$month])" :active="request()->routeIs('reminder.list.due')">
                     {{ __('Reminders Due') }}
                 </x-nav-link>
