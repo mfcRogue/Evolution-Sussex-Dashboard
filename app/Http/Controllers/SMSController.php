@@ -23,8 +23,9 @@ class SMSController extends Controller
     // return view sms dashboard
     public function test()
     {
+
         # code...
-        Mail::to("roguegfh@gmail.com")->send(new InboundMessage());
+        
     }
     public function dashboard()
     {
@@ -106,8 +107,10 @@ class SMSController extends Controller
 
      //remove leading 44
      $numberStripped = substr($request->msisdn, 2);
+     
      //replace with 0
      $validNumber= "0$numberStripped";
+     
      //insert into DB
      DB::table('messages')->insert(
          [
@@ -119,12 +122,22 @@ class SMSController extends Controller
          ]
      );
 
+     //update converstions so it's now active
      DB::table('conversations')
      ->updateOrInsert(
          ['number' => $validNumber],
          ['number' => $validNumber, 'updated' => now(), 'archived' => null]
      );
-     Mail::to("roguegfh@gmail.com")->send(new InboundMessage());
+
+     //get all users 
+     $all_users = DB::table('users')
+     ->get();
+     
+     //loop through all users and send alert email
+     foreach($all_users as $recipient)
+     {
+         Mail::to($recipient)->send(new InboundMessage());
+     }
 
     }
 
