@@ -35,9 +35,19 @@
     </div>
 </div>
 
+
+@if ($sms_active->hasPages())
+  
 <div class="flex m-4 text-center  flex-wrap content-center flex-col">
 <div class="flex-auto bg-white text-gray-900 p-6 m-2 shadow-md rounded w-1/2 text-center">    
+
 {{ $sms_active->links() }}
+
 </div>
 </div>
+
+@endif
+
+
+
 </x-app-layout>

@@ -10,12 +10,22 @@ use Nexmo\Laravel\Facade\Nexmo;
 use Illuminate\Support\Facades\DB;
 //use string features
 use Illuminate\Support\Str;
+//use Mail
+use Illuminate\Support\Facades\Mail;
+
+use App\Mail\InboundMessage;
+
+
 
 class SMSController extends Controller
 {
     // Dashboard shows current (live) conversdations and lists them in a table
     // return view sms dashboard
-
+    public function test()
+    {
+        # code...
+        Mail::to("roguegfh@gmail.com")->send(new InboundMessage());
+    }
     public function dashboard()
     {
         $sms_active = DB::table('conversations')
@@ -114,6 +124,7 @@ class SMSController extends Controller
          ['number' => $validNumber],
          ['number' => $validNumber, 'updated' => now(), 'archived' => null]
      );
+     Mail::to("roguegfh@gmail.com")->send(new InboundMessage());
 
     }
 
