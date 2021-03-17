@@ -58,39 +58,41 @@ class ReminderSendController extends Controller
                 'RegNo' => $mail_data->RegNo,
                 'Make' => $mail_data->Make,
                 'Model' => $mail_data->Model,
-                'ServDueDate' => date('d-m-Y', strtotime($mail_data->ServDueDate)),
-                'MOTDueDate' => date('d-m-Y', strtotime($mail_data->MOTDueDate)),
+                'ServDueDate' => date('d/m/Y', strtotime($mail_data->ServDueDate)),
+                'MOTDueDate' => date('d/m/Y', strtotime($mail_data->MOTDueDate)),
                 'CustName' => $mail_data->Name,
                 'CustForename' => $mail_data->Forename,
-                'CustTitle' => $mail_data->Title
+                'CustTitle' => $mail_data->Title,
+                'Email1'=>$mail_data->Email,
+                'Email2'=>$mail_data->Email2
                 ];
                 //if customer has both emails set Email to "To" and Email2 as CC
                 if (!empty($mail_data->Email) and !empty($mail_data->Email2)) {
-
-                    dump($mail_data->Email, $mail_data->Emai2);
+                    
+                   
                 }
                 //else if Email 2 is only set set Email2
                 elseif(empty($mail_data->Email) and !empty($mail_data->Email2))
                 {
-                    dump($mail_data->Email2);
+
                 }
                 else{
-                    dump($mail_data->Email);
                 }
+                //use return render to view email and testing
+                //return (new CombinedReminder($data))->render();
                 
-                return (new CombinedReminder($data))->render();
+                //use to send mail via .env settings
+  
             }
- 
-           /* Mail::to("roguegfh@gmail.com")
+            /*Mail::to("roguegfh@gmail.com")
+            ->bcc("service@evosussex.co.uk")
             ->send(new CombinedReminder($data));*/
 
 
-        
-      /*
-
+            
         $service_data_due = DB::table('vehicles')
         ->join('customers', 'CustomerReference', '=', 'Reference')
-        ->select('RegNo','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title')
+        ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename')
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->whereNotBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->where('CustomerReference', '<>', 'INTERNAL')
@@ -113,36 +115,107 @@ class ReminderSendController extends Controller
             ->where('customers.Email2', '<>', '');
         })
         ->get();
-        dump($service_data_due);
-       
-        $mot_data_due = DB::table('vehicles')
-        ->join('customers', 'CustomerReference', '=', 'Reference')
-        ->select('RegNo','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title')
-        ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-        ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-        ->where('CustomerReference', '<>', 'INTERNAL')
-        ->where('customers.Email', '<>', '')
-        ->where('customers.Email2', '<>', '')
-        ->orWhere(function($query) use($month, $year) {
-            $query
+
+        foreach($service_data_due as $mail_data)
+            {
+                $data = [
+                'RegNo' => $mail_data->RegNo,
+                'Make' => $mail_data->Make,
+                'Model' => $mail_data->Model,
+                'ServDueDate' => date('d/m/Y', strtotime($mail_data->ServDueDate)),
+                'MOTDueDate' => date('d/m/Y', strtotime($mail_data->MOTDueDate)),
+                'CustName' => $mail_data->Name,
+                'CustForename' => $mail_data->Forename,
+                'CustTitle' => $mail_data->Title,
+                'Email1'=>$mail_data->Email,
+                'Email2'=>$mail_data->Email2
+                ];
+                //if customer has both emails set Email to "To" and Email2 as CC
+                if (!empty($mail_data->Email) and !empty($mail_data->Email2)) {
+
+
+                }
+                //else if Email 2 is only set set Email2
+                elseif(empty($mail_data->Email) and !empty($mail_data->Email2))
+                {
+
+                }
+                else{
+
+                }
+                //use return render to view email and testing
+                //return (new ServiceReminder($data))->render();
+                
+                //use to send mail via .env settings
+  
+            }
+            /*Mail::to("roguegfh@gmail.com")
+            ->bcc("service@evosussex.co.uk")
+            ->send(new CombinedReminder($data));*/
+
+            $mot_data_due = DB::table('vehicles')
+            ->join('customers', 'CustomerReference', '=', 'Reference')
+            ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename')
             ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
             ->where('customers.Email', '<>', '')
-            ->where('customers.Email2', '=', '');
-        })
-        ->orWhere(function($query) use($month, $year) {
-            $query
-            ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-            ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
-            ->where('CustomerReference', '<>', 'INTERNAL')
-            ->where('customers.Email', '=', '')
-            ->where('customers.Email2', '<>', '');
-        })
-        ->get();
+            ->where('customers.Email2', '<>', '')
+            ->orWhere(function($query) use($month, $year) {
+                $query
+                ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+                ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+                ->where('CustomerReference', '<>', 'INTERNAL')
+                ->where('customers.Email', '<>', '')
+                ->where('customers.Email2', '=', '');
+            })
+            ->orWhere(function($query) use($month, $year) {
+                $query
+                ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+                ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+                ->where('CustomerReference', '<>', 'INTERNAL')
+                ->where('customers.Email', '=', '')
+                ->where('customers.Email2', '<>', '');
+            })
+            ->get();
+    
+            foreach($mot_data_due as $mail_data)
+                {
+                    $data = [
+                    'RegNo' => $mail_data->RegNo,
+                    'Make' => $mail_data->Make,
+                    'Model' => $mail_data->Model,
+                    'ServDueDate' => date('d/m/Y', strtotime($mail_data->ServDueDate)),
+                    'MOTDueDate' => date('d/m/Y', strtotime($mail_data->MOTDueDate)),
+                    'CustName' => $mail_data->Name,
+                    'CustForename' => $mail_data->Forename,
+                    'CustTitle' => $mail_data->Title,
+                    'Email1'=>$mail_data->Email,
+                    'Email2'=>$mail_data->Email2
+                    ];
+                    //if customer has both emails set Email to "To" and Email2 as CC
+                    if (!empty($mail_data->Email) and !empty($mail_data->Email2)) {
+    
+    
+                    }
+                    //else if Email 2 is only set set Email2
+                    elseif(empty($mail_data->Email) and !empty($mail_data->Email2))
+                    {
+    
+                    }
+                    else{
+    
+                    }
+                    //use return render to view email and testing
+                    return (new ServiceReminder($data))->render();
+                    
+                    //use to send mail via .env settings
+      
+                }
+                /*Mail::to("roguegfh@gmail.com")
+                ->bcc("service@evosussex.co.uk")
+                ->send(new CombinedReminder($data));*/
 
-        dump($mot_data_due);
-        */
     }
 
 }
