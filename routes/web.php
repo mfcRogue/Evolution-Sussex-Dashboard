@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\ReminderSendController;
 use App\Http\Controllers\SMSController;
 
 
@@ -30,6 +31,11 @@ Route::get('/dashboard', function () {
 Route::get('/reminder/dashboard',  [ReminderController::class, 'index'])->name('reminder.dashboard')->middleware(['auth']);
 Route::get('/reminder/dashboard/list/due/{month}',  [ReminderController::class, 'list_due'])->name('reminder.list.due')->middleware(['auth']);
 
+//reminder send system
+
+//send email
+Route::get('/reminder/send/email/{month}',  [ReminderSendController::class, 'email'])->name('reminder.send.email')->middleware(['auth']);
+
 
 //SMS System
 Route::get('/sms/test',  [SMSController::class, 'test'])->name('sms.test')->middleware(['auth']);
@@ -52,5 +58,8 @@ Route::get('/sms/view/{id}',  [SMSController::class, 'view'])->name('sms.view')-
 
 //external api auth route
 Route::post('/sms/recieve',  [SMSController::class, 'recieve'])->name('sms.recieve');
+
+
+
 
 require __DIR__.'/auth.php';

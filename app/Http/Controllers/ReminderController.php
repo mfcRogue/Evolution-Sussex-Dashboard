@@ -37,7 +37,7 @@ class ReminderController extends Controller
         //get combined service and MOT Due Dates for next month
         $combined_count_due = DB::table('vehicles')
             //->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate')
+            ->select('ServDueDate', 'MOTDueDate')
             ->whereBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -46,7 +46,7 @@ class ReminderController extends Controller
         //get combined service and MOT Due Dates for Email Sending next month
         $combined_count_due_email = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -73,7 +73,7 @@ class ReminderController extends Controller
         //get combined service and MOT Due Dates for SMS Sending next month
         $combined_count_due_sms = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -85,7 +85,7 @@ class ReminderController extends Controller
         //get combined service and MOT Due Dates for Post Sending next month
         $combined_count_due_post = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -98,7 +98,7 @@ class ReminderController extends Controller
         //get combined service and MOT overDue Dates
         $combined_count_due_overdue = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereBetween('ServDueDate', [$year.'-'.$month_now.'-01', $year.'-'.$month_now.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month_now.'-01', $year.'-'.$month_now.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -117,7 +117,7 @@ class ReminderController extends Controller
         //get combined service and MOT Due Dates for next month
         $mot_count_due = DB::table('vehicles')
             //->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate')
+            ->select('ServDueDate', 'MOTDueDate')
             ->whereNotBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -126,7 +126,7 @@ class ReminderController extends Controller
         //get MOT Due Dates for Email Sending next month
         $mot_count_due_email = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereNotBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -153,7 +153,7 @@ class ReminderController extends Controller
         //get  MOT Due Dates for SMS Sending next month
         $mot_count_due_sms = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereNotBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -165,7 +165,7 @@ class ReminderController extends Controller
         //get MOT Due Dates for Post Sending next month
         $mot_count_due_post = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereNotBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -178,7 +178,7 @@ class ReminderController extends Controller
         //get MOT overDue Dates
         $mot_count_due_overdue = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereNotBetween('ServDueDate', [$year.'-'.$month_now.'-01', $year.'-'.$month_now.'-31'])
             ->whereBetween('MOTDueDate', [$year.'-'.$month_now.'-01', $year.'-'.$month_now.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -198,7 +198,7 @@ class ReminderController extends Controller
         //get  service due datesfor next month
         $service_count_due = DB::table('vehicles')
         //->join('customers', 'CustomerReference', '=', 'Reference')
-        ->select('SevDueDate', 'MOTDueDate')
+        ->select('ServDueDate', 'MOTDueDate')
         ->whereBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
         ->whereNotBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
         ->where('CustomerReference', '<>', 'INTERNAL')
@@ -207,7 +207,7 @@ class ReminderController extends Controller
         //get service Due Dates for Email Sending next month
         $service_count_due_email = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->whereNotBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -234,7 +234,7 @@ class ReminderController extends Controller
         //get  service Due Dates for SMS Sending next month
         $service_count_due_sms = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->whereNotBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -246,7 +246,7 @@ class ReminderController extends Controller
         //get service Due Dates for Post Sending next month
         $service_count_due_post = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereBetween('ServDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->whereNotBetween('MOTDueDate', [$year.'-'.$month_next.'-01', $year.'-'.$month_next.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
@@ -259,7 +259,7 @@ class ReminderController extends Controller
         //get service overDue Dates
         $service_count_due_overdue = DB::table('vehicles')
             ->join('customers', 'CustomerReference', '=', 'Reference')
-            ->select('SevDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
+            ->select('ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2')
             ->whereBetween('ServDueDate', [$year.'-'.$month_now.'-01', $year.'-'.$month_now.'-31'])
             ->whereNotBetween('MOTDueDate', [$year.'-'.$month_now.'-01', $year.'-'.$month_now.'-31'])
             ->where('CustomerReference', '<>', 'INTERNAL')
