@@ -1,7 +1,7 @@
+<html>
 <div><img src='https://evolutionsussex.co.uk/public/img/header.jpg' width='80%'/></div>
 
 <div class="font-sans">
-{{$data['Email1']}} | {{$data['Email2']}}
 <p>Dear {{$data['CustTitle']}} {{$data['CustForename']}} {{$data['CustName']}}</p>
 <p>Your {{$data['Make']}} {{$data['Model']}} - {{$data['RegNo']}}</p>
 
@@ -18,3 +18,4 @@
 
 <p>This email was generated on the {{date('d/m/Y', strtotime(now()))}}
 </div>
+</html>

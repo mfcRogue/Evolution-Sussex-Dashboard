@@ -32,7 +32,7 @@ class CombinedReminder extends Mailable
     public function build()
     {
         return $this
-        ->from('service@evosussex.co.uk')
+        ->from('service@evosussex.co.uk', "Brighton Mitsubishi")
         ->subject('Re: Service and MOT Reminder')
         ->view('mail.reminder.combined');
     }

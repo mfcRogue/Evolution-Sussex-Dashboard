@@ -31,7 +31,7 @@ class ServiceReminder extends Mailable
      */
     public function build()
     {
-        return $this->from('service@evosussex.co.uk')
+        return $this->from('service@evosussex.co.uk', "Brighton Mitsubishi")
         ->subject('Re: Service Reminder')
         ->view('mail.reminder.service');
     }

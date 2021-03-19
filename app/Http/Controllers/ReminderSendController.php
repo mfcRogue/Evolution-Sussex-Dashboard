@@ -68,26 +68,37 @@ class ReminderSendController extends Controller
                 ];
                 //if customer has both emails set Email to "To" and Email2 as CC
                 if (!empty($mail_data->Email) and !empty($mail_data->Email2)) {
-                    
+                    Mail::to($mail_data->Email)
+                    ->cc($mail_data->Email2)
+                    ->bcc("service@evosussex.co.uk")
+                    ->send(new CombinedReminder($data));
+
                    
                 }
                 //else if Email 2 is only set set Email2
                 elseif(empty($mail_data->Email) and !empty($mail_data->Email2))
                 {
+                    Mail::to($mail_data->Email2)
+                    ->bcc("service@evosussex.co.uk")
+                    ->send(new CombinedReminder($data));
 
                 }
-                else{
+                elseif(!empty($mail_data->Email) and empty($mail_data->Email2))
+                {
+                    Mail::to($mail_data->Email)
+                    ->bcc("service@evosussex.co.uk")
+                    ->send(new CombinedReminder($data));
                 }
                 //use return render to view email and testing
                 //return (new CombinedReminder($data))->render();
                 
                 //use to send mail via .env settings
+
+                unset($data);
+                unset($mail_data);
   
             }
-            /*Mail::to("roguegfh@gmail.com")
-            ->bcc("service@evosussex.co.uk")
-            ->send(new CombinedReminder($data));*/
-
+           
 
             
         $service_data_due = DB::table('vehicles')
@@ -207,7 +218,7 @@ class ReminderSendController extends Controller
     
                     }
                     //use return render to view email and testing
-                    return (new ServiceReminder($data))->render();
+                    //return (new ServiceReminder($data))->render();
                     
                     //use to send mail via .env settings
       
