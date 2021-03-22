@@ -35,6 +35,10 @@ Route::get('/reminder/dashboard/list/due/{month}',  [ReminderController::class, 
 
 //send email
 Route::get('/reminder/send/email/{month}',  [ReminderSendController::class, 'email'])->name('reminder.send.email')->middleware(['auth']);
+//send sms
+Route::get('/reminder/send/sms/{month}',  [ReminderSendController::class, 'sms'])->name('reminder.send.sms')->middleware(['auth']);
+//print print
+Route::get('/reminder/send/print/{month}',  [ReminderSendController::class, 'print'])->name('reminder.send.print')->middleware(['auth']);
 
 
 //SMS System

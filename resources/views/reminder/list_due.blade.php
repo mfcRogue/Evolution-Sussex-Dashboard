@@ -11,6 +11,13 @@
     </div>
 </div>
 <div class="flex m-1  text-center  flex-wrap content-evenly">
+    <div class="flex-auto bg-gray-50 p-6 shadow-md rounded">
+      <a href="{{route('reminder.send.email', ['month'=>$month])}}" class="w-1/6 hover:bg-blue-300 bg-blue-600 border-2 border-blue-500 hover:border-blue-500 bg-transparent text-white hover:text-blue-600 py-1 px-2 font-semibold rounded-md"><i class="fas fa-at"></i> Send Email Reminders</a>
+      <a href="{{route('reminder.send.sms', ['month'=>$month])}}" class="w-1/6 hover:bg-blue-300 bg-blue-600 border-2 border-blue-500 hover:border-blue-500 bg-transparent text-white hover:text-blue-600 py-1 px-2 font-semibold rounded-md"><i class="fas fa-sms"></i> Send Text Reminders</a>
+      <a href="{{route('reminder.send.print', ['month'=>$month])}}" class="w-1/6 hover:bg-blue-300 bg-blue-600 border-2 border-blue-500 hover:border-blue-500 bg-transparent text-white hover:text-blue-600 py-1 px-2 font-semibold rounded-md"><i class="fas fa-mail-bulk"></i> Print Mail Reminders</a>
+    </div>
+</div>
+<div class="flex m-1  text-center  flex-wrap content-evenly">
 <div class="flex-auto bg-gray-50 p-6 shadow-md rounded">
     <strong><div>Combined Service and MOT Reminders</div></strong>
 </div>

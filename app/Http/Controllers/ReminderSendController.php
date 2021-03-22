@@ -24,11 +24,11 @@ class ReminderSendController extends Controller
     {
         $year = date('Y', strtotime(now()));
 
-        //*******************
-        // 
-        // Combined service reminders
-        // 
-        //*******************
+        /*******************
+        * 
+        * Combined service reminders
+        * 
+        *******************/
 
         $combined_data_due = DB::table('vehicles')
         ->join('customers', 'CustomerReference', '=', 'Reference')
@@ -104,11 +104,11 @@ class ReminderSendController extends Controller
         }
            
 
-        //*******************
-        // 
-        // Service only service reminders
-        // 
-        //*******************
+        /*******************
+        * 
+        * Service only service reminders
+        * 
+        *******************/
 
         $service_data_due = DB::table('vehicles')
         ->join('customers', 'CustomerReference', '=', 'Reference')
@@ -182,11 +182,11 @@ class ReminderSendController extends Controller
             
         }
 
-        //*******************
-        // 
-        // MOT only service reminders
-        // 
-        //*******************
+        /*******************
+        * 
+        * MOT only service reminders
+        * 
+        ********************/
 
         $mot_data_due = DB::table('vehicles')
         ->join('customers', 'CustomerReference', '=', 'Reference')
@@ -254,13 +254,87 @@ class ReminderSendController extends Controller
                 Mail::to($mail_data->Email)
                 ->bcc("service@evosussex.co.uk")
                 ->send(new MOTReminder($data));
-                
+
             }
             //use return render to view email and testing
             //return (new ServiceReminder($data))->render();
 
+
+            //redirect back to mainscreen
+            return redirect()->route('reminder.dashboard')->with('status', 'Email Reminders Sent');
+            
         }
 
+    }
+
+    public function sms($month)
+    {
+        $year = date('Y', strtotime(now()));
+
+        /*******************
+        * 
+        * Combined service reminders
+        * 
+        *******************/
+
+        $combined_data_due = DB::table('vehicles')
+        ->join('customers', 'CustomerReference', '=', 'Reference')
+        ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename')
+        ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->where('CustomerReference', '<>', 'INTERNAL')
+        ->where('customers.Email', '=', '')
+        ->where('customers.Email2', '=', '')
+        ->where('customers.Str1', '<>', '')
+        ->get();
+
+        dump($combined_data_due);
+
+        /****************
+         * ***
+        * 
+        * MOT only service reminders
+        * 
+        *******************/
+
+        $mot_data_due = DB::table('vehicles')
+        ->join('customers', 'CustomerReference', '=', 'Reference')
+        ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename')
+        ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->where('CustomerReference', '<>', 'INTERNAL')
+        ->where('customers.Email', '=', '')
+        ->where('customers.Email2', '=', '')
+        ->where('customers.Str1', '<>', '')
+        ->get();
+
+        dump($mot_data_due);
+
+
+
+        /*******************
+        * 
+        * Service only service reminders
+        * 
+        *******************/
+
+        $service_data_due = DB::table('vehicles')
+        ->join('customers', 'CustomerReference', '=', 'Reference')
+        ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename')
+        ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereNotBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->where('CustomerReference', '<>', 'INTERNAL')
+        ->where('customers.Email', '=', '')
+        ->where('customers.Email2', '=', '')
+        ->where('customers.Str1', '<>', '')
+        ->get();
+
+        dump($service_data_due);
+    }
+
+    public function print($month)
+    {
+        
     }
 
 }
