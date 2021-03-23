@@ -12,6 +12,7 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
         <script src="https://kit.fontawesome.com/83b85609ce.js" crossorigin="anonymous"></script>
 
         <!-- Scripts -->

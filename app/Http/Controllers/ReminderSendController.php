@@ -288,7 +288,21 @@ class ReminderSendController extends Controller
         ->where('customers.Str1', '<>', '')
         ->get();
 
-        dump($combined_data_due);
+        //remove any spaces
+        
+        foreach($combined_data_due as $sms_data)
+        {
+            $sms_number = str_replace(' ', '', $sms_data->Str1);
+             //remove leading 0
+            $number_stripped = substr($sms_number, 1);
+            //add 44 required for Nexmo API
+            $valid_number = "44$number_stripped";
+            //once validated, push to Nexmo Function
+            
+            $message = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service and MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
+            echo"<p>$message</p>";
+        }
+            //dump($combined_data_due);
 
         /****************
          * ***
@@ -307,8 +321,17 @@ class ReminderSendController extends Controller
         ->where('customers.Email2', '=', '')
         ->where('customers.Str1', '<>', '')
         ->get();
-
-        dump($mot_data_due);
+        foreach($mot_data_due as $sms_data)
+        {
+            $sms_number = str_replace(' ', '', $sms_data->Str1);
+            //remove leading 0
+            $number_stripped = substr($sms_number, 1);
+            //add 44 required for Nexmo API
+            $valid_number = "44$number_stripped";
+            //once validated, push to Nexmo Function
+            $message = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
+        }
+        //dump($mot_data_due);
 
 
 
@@ -328,13 +351,82 @@ class ReminderSendController extends Controller
         ->where('customers.Email2', '=', '')
         ->where('customers.Str1', '<>', '')
         ->get();
+        foreach($service_data_due as $sms_data)
+        {
+        $sms_number = str_replace(' ', '', $sms_data->Str1);
+        //remove leading 0
+        $number_stripped = substr($sms_number, 1);
+        //add 44 required for Nexmo API
+        $valid_number = "44$number_stripped";
+        //once validated, push to Nexmo Function
+        $message = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
 
-        dump($service_data_due);
+        }
+        //dump($service_data_due);
+
+        return redirect()->back()->with('status', 'SMS Messages sent');
     }
 
     public function print($month)
     {
+
+        $year = date('Y', strtotime(now()));
+
         
+        /*******************
+        * 
+        * Service and MOT service reminders
+        * 
+        *******************/
+
+
+        $combined_data_due = DB::table('vehicles')
+        ->join('customers', 'CustomerReference', '=', 'Reference')
+        ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename')
+        ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->where('CustomerReference', '<>', 'INTERNAL')
+        ->where('customers.Email', '=', '')
+        ->where('customers.Email2', '=', '')
+        ->where('customers.Str1', '=', '')
+        ->get();
+
+        
+        /*******************
+        * 
+        * MOT only service reminders
+        * 
+        *******************/
+
+        $mot_data_due = DB::table('vehicles')
+        ->join('customers', 'CustomerReference', '=', 'Reference')
+        ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename', 'customers.Street 1', 'customers.Street 2', 'customers.Town', 'customers.County', 'customers.Postcode')
+        ->whereNotBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->where('CustomerReference', '<>', 'INTERNAL')
+        ->where('customers.Email', '=', '')
+        ->where('customers.Email2', '=', '')
+        ->where('customers.Str1', '=', '')
+        ->get();
+
+        /*******************
+        * 
+        * Service only service reminders
+        * 
+        *******************/
+
+        $service_data_due = DB::table('vehicles')
+        ->join('customers', 'CustomerReference', '=', 'Reference')
+        ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename', 'customers.Street 1')
+        ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->whereNotBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
+        ->where('CustomerReference', '<>', 'INTERNAL')
+        ->where('customers.Email', '=', '')
+        ->where('customers.Email2', '=', '')
+        ->where('customers.Str1', '=', '')
+        ->get();
+        
+        return view('reminder.post.reminder', ['month'=>$month, 'combined_data_due'=>$combined_data_due, 'mot_data_due'=>$mot_data_due, 'service_data_due'=>$service_data_due]);
     }
 
 }
