@@ -1,8 +1,8 @@
 <x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight no-print">
         {{ __('Reminder System') }}
     </h2>
-    <div class="flex">
+    <div class="flex no-print">
     <!-- Reminder Navigation -->
             <div class="flex-shrink-0 flex items-center">
                 <x-nav-link :href="route('reminder.dashboard')" :active="request()->routeIs('reminder.dashboard')">

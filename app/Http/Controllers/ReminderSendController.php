@@ -382,7 +382,7 @@ class ReminderSendController extends Controller
 
         $combined_data_due = DB::table('vehicles')
         ->join('customers', 'CustomerReference', '=', 'Reference')
-        ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename')
+        ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename', 'customers.Street 1', 'customers.Street 2', 'customers.Town', 'customers.County', 'customers.Postcode')
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->whereBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->where('CustomerReference', '<>', 'INTERNAL')
@@ -417,7 +417,7 @@ class ReminderSendController extends Controller
 
         $service_data_due = DB::table('vehicles')
         ->join('customers', 'CustomerReference', '=', 'Reference')
-        ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename', 'customers.Street 1')
+        ->select('RegNo','Make','Model','ServDueDate', 'MOTDueDate', 'customers.Email', 'customers.Email2', 'customers.Str1', 'customers.Name', 'customers.Title', 'customers.Forename', 'customers.Street 1', 'customers.Street 2', 'customers.Town', 'customers.County', 'customers.Postcode')
         ->whereBetween('ServDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->whereNotBetween('MOTDueDate', [$year.'-'.$month.'-01', $year.'-'.$month.'-31'])
         ->where('CustomerReference', '<>', 'INTERNAL')
