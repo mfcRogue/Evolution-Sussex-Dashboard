@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 //use Mail
 use Illuminate\Support\Facades\Mail;
+//use Auth for User data
+use Illuminate\Support\Facades\Auth;
 //mail templates
 use App\Mail\CombinedReminder;
 use App\Mail\ServiceReminder;
