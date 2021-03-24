@@ -187,7 +187,8 @@ class ReminderSendController extends Controller
             }
             //use return render to view email and testing
             //return (new ServiceReminder($data))->render();
-            
+            unset($data);
+            unset($mail_data);
         }
 
         /*******************
@@ -267,11 +268,12 @@ class ReminderSendController extends Controller
             //use return render to view email and testing
             //return (new ServiceReminder($data))->render();
 
-
-            //redirect back to mainscreen
-            return redirect()->route('reminder.dashboard')->with('status', 'Email Reminders Sent');
+            unset($data);
+            unset($mail_data);
             
         }
+                //redirect back to mainscreen
+        return redirect()->route('reminder.dashboard')->with('status', 'Email Reminders Sent');
 
     }
 
@@ -321,7 +323,7 @@ class ReminderSendController extends Controller
 
             //send number and message
             Nexmo::message()->send([
-                'to'   => $validNumber,
+                'to'   => $valid_number,
                 'from' => '447507332161',
                 'text' => $message_text
             ]);
@@ -375,7 +377,7 @@ class ReminderSendController extends Controller
             $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
             //send number and message
             Nexmo::message()->send([
-                'to'   => $validNumber,
+                'to'   => $valid_number,
                 'from' => '447507332161',
                 'text' => $message_text
             ]);
@@ -431,7 +433,7 @@ class ReminderSendController extends Controller
       
         //send number and message
         Nexmo::message()->send([
-            'to'   => $validNumber,
+            'to'   => $valid_number,
             'from' => '447507332161',
             'text' => $message_text
         ]);
