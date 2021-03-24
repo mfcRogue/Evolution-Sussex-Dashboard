@@ -19,7 +19,15 @@ use App\Mail\MOTReminder;
 
 class ReminderSendController extends Controller
 {
-    //
+    
+        /*******************
+        * 
+        * Email Reminders
+        *
+        * Requires SMTP
+        * 
+        *******************/
+
     public function email($month)
     {
         $year = date('Y', strtotime(now()));
@@ -267,6 +275,15 @@ class ReminderSendController extends Controller
 
     }
 
+        /*******************
+        * 
+        * Send SMS Reminders
+        *
+        * Requires Nexmo API
+        * 
+        *******************/
+
+
     public function sms($month)
     {
         $year = date('Y', strtotime(now()));
@@ -274,6 +291,7 @@ class ReminderSendController extends Controller
         /*******************
         * 
         * Combined service reminders
+        * 
         * 
         *******************/
 
@@ -300,12 +318,37 @@ class ReminderSendController extends Controller
             //once validated, push to Nexmo Function
             
             $message = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service and MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
-            echo"<p>$message</p>";
-        }
+
+            //send number and message
+            Nexmo::message()->send([
+                'to'   => $validNumber,
+                'from' => '447507332161',
+                'text' => $message_text
+            ]);
+
+            DB::table('messages')->insert(
+                [
+                'number' => $sms_data->Str1,
+                'message' => $message_text,
+                'created' => now(),
+                'user' => $request->user()->id,
+                'nexmo_id'=>$message['message-id']
+                ]
+            );
+            //create or update conversation
+            DB::table('conversations')
+            ->updateOrInsert(
+                ['number' => $sms_data->Str1],
+                ['number' => $sms_data->Str1, 'updated' => now(), 'archived' => null]
+            );
+
+                unset($sms_data);
+                unset($message);
+            }
             //dump($combined_data_due);
 
         /****************
-         * ***
+        * 
         * 
         * MOT only service reminders
         * 
@@ -329,7 +372,32 @@ class ReminderSendController extends Controller
             //add 44 required for Nexmo API
             $valid_number = "44$number_stripped";
             //once validated, push to Nexmo Function
-            $message = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
+            $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
+            //send number and message
+            Nexmo::message()->send([
+                'to'   => $validNumber,
+                'from' => '447507332161',
+                'text' => $message_text
+            ]);
+    
+            DB::table('messages')->insert(
+                [
+                'number' => $sms_data->Str1,
+                'message' => $message_text,
+                'created' => now(),
+                'user' => $request->user()->id,
+                'nexmo_id'=>$message['message-id']
+                ]
+            );
+            //create or update conversation
+            DB::table('conversations')
+            ->updateOrInsert(
+                ['number' => $sms_data->Str1],
+                ['number' => $sms_data->Str1, 'updated' => now(), 'archived' => null]
+            );
+            
+            unset($sms_data);
+            unset($message);
         }
         //dump($mot_data_due);
 
@@ -359,13 +427,41 @@ class ReminderSendController extends Controller
         //add 44 required for Nexmo API
         $valid_number = "44$number_stripped";
         //once validated, push to Nexmo Function
-        $message = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
+        $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
+      
+        //send number and message
+        Nexmo::message()->send([
+            'to'   => $validNumber,
+            'from' => '447507332161',
+            'text' => $message_text
+        ]);
+
+        DB::table('messages')->insert(
+            [
+            'number' => $sms_data->Str1,
+            'message' => $message_text,
+            'created' => now(),
+            'user' => $request->user()->id,
+            'nexmo_id'=>$message['message-id']
+            ]
+        );
+        //create or update conversation
+        DB::table('conversations')
+        ->updateOrInsert(
+            ['number' => $sms_data->Str1],
+            ['number' => $sms_data->Str1, 'updated' => now(), 'archived' => null]
+        );
+        unset($sms_data);
+        unset($message);
 
         }
         //dump($service_data_due);
 
         return redirect()->back()->with('status', 'SMS Messages sent');
     }
+
+
+
 
     public function print($month)
     {
