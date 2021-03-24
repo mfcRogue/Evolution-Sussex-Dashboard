@@ -273,7 +273,7 @@ class ReminderSendController extends Controller
             
         }
                 //redirect back to mainscreen
-        return redirect()->route('reminder.dashboard')->with('status', 'Email Reminders Sent');
+        return redirect()->back()->with('status', 'Email Reminders Sent');
 
     }
 
@@ -319,7 +319,7 @@ class ReminderSendController extends Controller
             $valid_number = "44$number_stripped";
             //once validated, push to Nexmo Function
             
-            $message = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service and MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
+            $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service and MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
 
             //send number and message
             Nexmo::message()->send([
