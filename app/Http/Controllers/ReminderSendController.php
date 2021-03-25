@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 //use Auth for User data
 use Illuminate\Support\Facades\Auth;
+use App\User;
 //mail templates
 use App\Mail\CombinedReminder;
 use App\Mail\ServiceReminder;
@@ -322,20 +323,20 @@ class ReminderSendController extends Controller
             //once validated, push to Nexmo Function
             
             $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service and MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
-
+            dump($message_text , $valid_number);
             //send number and message
             Nexmo::message()->send([
                 'to'   => $valid_number,
                 'from' => '447507332161',
                 'text' => $message_text
             ]);
-
+       
             DB::table('messages')->insert(
                 [
                 'number' => $sms_data->Str1,
                 'message' => $message_text,
                 'created' => now(),
-                'user' => $request->user()->id,
+                'user' => Auth::id(),
                 'nexmo_id'=>$message['message-id']
                 ]
             );
@@ -345,9 +346,10 @@ class ReminderSendController extends Controller
                 ['number' => $sms_data->Str1],
                 ['number' => $sms_data->Str1, 'updated' => now(), 'archived' => null]
             );
-
+     
                 unset($sms_data);
                 unset($message);
+            
             }
             //dump($combined_data_due);
 
@@ -377,20 +379,22 @@ class ReminderSendController extends Controller
             $valid_number = "44$number_stripped";
             //once validated, push to Nexmo Function
             $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
+            
+            dump($message_text , $valid_number);
             //send number and message
             Nexmo::message()->send([
                 'to'   => $valid_number,
                 'from' => '447507332161',
                 'text' => $message_text
             ]);
-    
+       
             DB::table('messages')->insert(
                 [
                 'number' => $sms_data->Str1,
                 'message' => $message_text,
                 'created' => now(),
-                'user' => $request->user()->id,
-                'nexmo_id'=>$message['message-id']
+                'user' => Auth::id(),
+                //'nexmo_id'=>$message['message-id']
                 ]
             );
             //create or update conversation
@@ -399,7 +403,7 @@ class ReminderSendController extends Controller
                 ['number' => $sms_data->Str1],
                 ['number' => $sms_data->Str1, 'updated' => now(), 'archived' => null]
             );
-            
+         
             unset($sms_data);
             unset($message);
         }
@@ -432,20 +436,20 @@ class ReminderSendController extends Controller
         $valid_number = "44$number_stripped";
         //once validated, push to Nexmo Function
         $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
-      
+        dump($message_text , $valid_number);
         //send number and message
         Nexmo::message()->send([
             'to'   => $valid_number,
             'from' => '447507332161',
             'text' => $message_text
         ]);
-
+        
         DB::table('messages')->insert(
             [
             'number' => $sms_data->Str1,
             'message' => $message_text,
             'created' => now(),
-            'user' => $request->user()->id,
+            'user' => Auth::id(),
             'nexmo_id'=>$message['message-id']
             ]
         );
