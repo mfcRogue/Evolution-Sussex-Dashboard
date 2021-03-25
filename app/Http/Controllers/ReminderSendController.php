@@ -333,7 +333,7 @@ class ReminderSendController extends Controller
        
             DB::table('messages')->insert(
                 [
-                'number' => $sms_data->Str1,
+                'number' => $sms_number,
                 'message' => $message_text,
                 'created' => now(),
                 'user' => Auth::id(),
@@ -343,8 +343,8 @@ class ReminderSendController extends Controller
             //create or update conversation
             DB::table('conversations')
             ->updateOrInsert(
-                ['number' => $sms_data->Str1],
-                ['number' => $sms_data->Str1, 'updated' => now(), 'archived' => null]
+                ['number' => $sms_number],
+                ['number' => $sms_number, 'updated' => now(), 'archived' => null]
             );
      
                 unset($sms_data);
@@ -390,7 +390,7 @@ class ReminderSendController extends Controller
        
             DB::table('messages')->insert(
                 [
-                'number' => $sms_data->Str1,
+                'number' => $sms_number,
                 'message' => $message_text,
                 'created' => now(),
                 'user' => Auth::id(),
@@ -400,8 +400,8 @@ class ReminderSendController extends Controller
             //create or update conversation
             DB::table('conversations')
             ->updateOrInsert(
-                ['number' => $sms_data->Str1],
-                ['number' => $sms_data->Str1, 'updated' => now(), 'archived' => null]
+                ['number' => $sms_number],
+                ['number' => $sms_number, 'updated' => now(), 'archived' => null]
             );
          
             unset($sms_data);
@@ -446,7 +446,7 @@ class ReminderSendController extends Controller
         
         DB::table('messages')->insert(
             [
-            'number' => $sms_data->Str1,
+            'number' => $sms_number,
             'message' => $message_text,
             'created' => now(),
             'user' => Auth::id(),
@@ -456,8 +456,8 @@ class ReminderSendController extends Controller
         //create or update conversation
         DB::table('conversations')
         ->updateOrInsert(
-            ['number' => $sms_data->Str1],
-            ['number' => $sms_data->Str1, 'updated' => now(), 'archived' => null]
+            ['number' => $sms_number],
+            ['number' => $sms_number, 'updated' => now(), 'archived' => null]
         );
         unset($sms_data);
         unset($message);
