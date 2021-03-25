@@ -28,6 +28,24 @@
                     {{ $header }}
                 </div>
             </header>
+            
+            
+            <!-- Flash Handle -->
+            @if (session('status'))
+            <div class="min-w-full p-2.5 bg-green-500 text-center content-center text-white">
+            {{ session('status') }}
+            </div>
+            @endif
+            @if ($errors->any())
+            <div class="min-w-full p-2.5 bg-red-600 text-center content-center text-white">
+            <b>The following errors have been found</b>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
             <!-- Page Content -->
             <main>
