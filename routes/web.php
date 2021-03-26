@@ -69,6 +69,9 @@ Route::post('/sms/recieve',  [SMSController::class, 'recieve'])->name('sms.recie
 
 //display form
 Route::get('/accounts/dashboard',  [AccountsController::class, 'index'])->name('accounts.dashboard')->middleware(['auth']);
+Route::post('/accounts/upload',  [AccountsController::class, 'upload'])->name('accounts.upload')->middleware(['auth']);
+
+Route::get('/accounts/proccess/{file}',  [AccountsController::class, 'proccess'])->name('accounts.proccess')->middleware(['auth']);
 
 
 
