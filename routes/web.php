@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\ReminderSendController;
 use App\Http\Controllers\SMSController;
+use App\Http\Controllers\AccountsController;
 
 
 /*
@@ -63,6 +64,11 @@ Route::get('/sms/view/{id}',  [SMSController::class, 'view'])->name('sms.view')-
 //external api auth route
 Route::post('/sms/recieve',  [SMSController::class, 'recieve'])->name('sms.recieve');
 
+
+//accounts system
+
+//display form
+Route::get('/accounts/dashboard',  [AccountsController::class, 'index'])->name('accounts.dashboard')->middleware(['auth']);
 
 
 

@@ -26,6 +26,11 @@
                         {{ __('SMS System') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-2 sm:flex">
+                    <x-nav-link :href="route('accounts.dashboard')" :active="request()->routeIs('accounts.*')">
+                        {{ __('Accounts System') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
