@@ -20,8 +20,8 @@ use App\Http\Controllers\AccountsController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
