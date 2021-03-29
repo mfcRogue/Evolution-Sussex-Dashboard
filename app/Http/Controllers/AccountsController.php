@@ -60,7 +60,6 @@ class AccountsController extends Controller
                 'col1' =>  $csv['1'],
                 'col2' =>  $csv['2'],
                 'col3' =>  $csv['3'],
-                'col4' =>  $csv['4'],
 
             ]);
             
@@ -69,7 +68,7 @@ class AccountsController extends Controller
         $data = AccountCSV::get();
 
         $csvExporter = new \Laracsv\Export();
-        $csvExporter->build($data, ['col0', 'col1', 'col2', 'col3', 'col4'], [
+        $csvExporter->build($data, ['col0', 'col1', 'col2', 'col3'], [
             'header' => false,
         ]);
         $csvExporter->download($name);
