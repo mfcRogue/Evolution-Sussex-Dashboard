@@ -80,14 +80,8 @@ class AccountsController extends Controller
         //dump($delete);
 
    
-        return redirect()->back();
+        return redirect()->back()->with('status', 'Completed');
         
     }
 
-    public function proccess($file)
-    {
-
-        
-
-    }
 }
