@@ -78,9 +78,10 @@ class AccountsController extends Controller
         $delete = Storage::disk('local')->delete($path);
         //dump($delete);
 
-   
+        if(!$csvExporter)
+        {
         return redirect()->back()->with('status', 'Completed');
-        
+        }
     }
 
 }
