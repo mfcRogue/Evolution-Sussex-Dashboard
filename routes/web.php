@@ -6,6 +6,7 @@ use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\ReminderSendController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\AccountsController;
+use App\Http\Controllers\LoanCarController;
 
 
 /*
@@ -73,6 +74,12 @@ Route::post('/accounts/upload',  [AccountsController::class, 'upload'])->name('a
 
 Route::get('/accounts/proccess/{file}',  [AccountsController::class, 'proccess'])->name('accounts.proccess')->middleware(['auth']);
 
+//loan car system
+//display all loan cars
+Route::get('/loancar/dashboard',  [LoanCarController::class, 'index'])->name('loancar.index')->middleware(['auth']);
+
+//add new loan car form
+Route::get('/loancar/create',  [LoanCarController::class, 'create'])->name('loancar.create')->middleware(['auth']);
 
 
 require __DIR__.'/auth.php';

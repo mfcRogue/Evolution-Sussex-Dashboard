@@ -31,6 +31,11 @@
                         {{ __('Accounts System') }}
                     </x-nav-link>
                 </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-2 sm:flex">
+                    <x-nav-link :href="route('loancar.index')" :active="request()->routeIs('loancar.*')">
+                        {{ __('Loan Car System') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
