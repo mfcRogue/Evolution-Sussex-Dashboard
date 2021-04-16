@@ -10,7 +10,7 @@
                 </x-nav-link>
             </div>
                 <div class="flex-shrink-0 flex items-center  ml-4">
-                <x-nav-link :href="route('loancar.index')" :active="request()->routeIs('loancar.index')">
+                <x-nav-link :href="route('loancar.create')" :active="request()->routeIs('loancar.create')">
                     {{ __('Add New') }}
                 </x-nav-link>
             </div>

@@ -80,6 +80,11 @@ Route::get('/loancar/dashboard',  [LoanCarController::class, 'index'])->name('lo
 
 //add new loan car form
 Route::get('/loancar/create',  [LoanCarController::class, 'create'])->name('loancar.create')->middleware(['auth']);
+Route::post('/loancar/store',  [LoanCarController::class, 'store'])->name('loancar.store')->middleware(['auth']);
 
+//edit existing loan car Edit / update / delete
+Route::get('/loancar/edit/{id}',  [LoanCarController::class, 'edit'])->name('loancar.edit')->middleware(['auth']);
+Route::post('/loancar/update/{id}',  [LoanCarController::class, 'update'])->name('loancar.update')->middleware(['auth']);
+Route::get('/loancar/destroy/{id}',  [LoanCarController::class, 'destroy'])->name('loancar.destroy')->middleware(['auth']);
 
 require __DIR__.'/auth.php';

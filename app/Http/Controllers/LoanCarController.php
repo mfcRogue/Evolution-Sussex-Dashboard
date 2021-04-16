@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
 class LoanCarController extends Controller
 {
@@ -15,11 +16,13 @@ class LoanCarController extends Controller
     public function index()
     {
         //show table of all loan cars
-        $loancars = DB::table('loancar')
-                    //->join('vehicles', 'CustomerReference', '=', 'Reference')
-            ->select('reg_no', 'mileage')
+        $loancars = DB::table('loan_cars')
+            ->join('vehicles', 'reg_no', '=', 'RegNo')
+            ->select('id', 'reg_no', 'mileage', 'vehicles.ServDueDate', 'vehicles.MOTDueDate')
+            ->orderBy('vehicles.MOTDueDate', 'asc')
             ->get();
-        return view('loancar.index');
+
+        return view('loancar.index', ['loancars'=>$loancars]);
     }
 
     /**
@@ -42,6 +45,15 @@ class LoanCarController extends Controller
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'regnumber' => 'required|exists:vehicles,RegNo|unique:loan_cars,reg_no  ',
+        ]);
+        DB::table('loan_cars')->insert(
+            [
+            'reg_no' => $request->regnumber,
+            ]
+        );
+        return redirect('loancar/dashboard')->with('status', 'Loan Car added');
     }
 
     /**
@@ -61,9 +73,17 @@ class LoanCarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(Request $request, $id)
+        {
+        //show edit form
+        $loancars = DB::table('loan_cars')
+        ->join('vehicles', 'reg_no', '=', 'RegNo')
+        ->select('id', 'reg_no', 'mileage', 'vehicles.ServDueDate', 'vehicles.MOTDueDate')
+        ->orderBy('vehicles.MOTDueDate', 'asc')
+        ->where('id', '=', $id)
+        ->get();
+
+        return view('loancar.edit', ['loancars'=>$loancars, 'request'=>$request]);
     }
 
     /**
@@ -76,6 +96,17 @@ class LoanCarController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'regnumber' => 'required|exists:vehicles,RegNo',
+            'mileage' => 'numeric',
+        ]);
+        $update = DB::table('loan_cars')
+              ->where('id', $id)
+              ->update([
+                'reg_no' => $request->regnumber,
+                'mileage' => $request->mileage
+              ]);
+        return redirect('loancar/dashboard')->with('status', 'Loan Car updated');
     }
 
     /**
@@ -86,6 +117,9 @@ class LoanCarController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //delete record, return to index
+        DB::table('loan_cars')->where('id', '=', $id)->delete();
+        return redirect('loancar/dashboard')->with('status', 'Loan Car Deleted');
+
     }
 }
