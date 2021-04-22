@@ -46,7 +46,7 @@ class LoanCarController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'regnumber' => 'required|exists:vehicles,RegNo|unique:loan_cars,reg_no  ',
+            'regnumber' => 'required|exists:vehicles,RegNo|unique:loan_cars,reg_no',
         ]);
         DB::table('loan_cars')->insert(
             [
