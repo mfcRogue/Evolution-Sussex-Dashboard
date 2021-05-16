@@ -7,6 +7,7 @@ use App\Http\Controllers\ReminderSendController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\LoanCarController;
+use App\Http\Controllers\AutoTraderController;
 
 
 /*
@@ -87,4 +88,8 @@ Route::get('/loancar/edit/{id}',  [LoanCarController::class, 'edit'])->name('loa
 Route::post('/loancar/update/{id}',  [LoanCarController::class, 'update'])->name('loancar.update')->middleware(['auth']);
 Route::get('/loancar/destroy/{id}',  [LoanCarController::class, 'destroy'])->name('loancar.destroy')->middleware(['auth']);
 
+
+//auto trader
+Route::get('/autotrader',  [AutoTraderController::class, 'index'])->name('autotrader.index')->middleware(['auth']);
 require __DIR__.'/auth.php';
+
