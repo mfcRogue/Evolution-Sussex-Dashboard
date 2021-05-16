@@ -41,8 +41,26 @@ class AutoTraderController extends Controller
 
             ],
             ]);
+            //dump($response2);
             $response2 = json_decode($response2->getBody(), true);
-            dd($response2);
+
+
+
+            //dump($response2['results']);
+            $i = 0;
+            foreach ($response2['results'] as $value) {
+                echo($value['vehicle']['registration']);
+                echo($value['vehicle']['make']);
+                echo($value['vehicle']['model']);
+                foreach ($value['media']['images'] as $images) {
+                    echo"<pre>";
+                    echo($images['href']);
+                    echo"</pre>";
+                }
+                $i++;
+
+
+            }
 
 
     }
