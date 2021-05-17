@@ -46,16 +46,24 @@ class AutoTraderController extends Controller
 
 
 
-            //dump($response2['results']);
+            dump($response2['results']);
             $i = 0;
             foreach ($response2['results'] as $value) {
                 echo($value['vehicle']['registration']);
-                echo($value['vehicle']['make']);
-                echo($value['vehicle']['model']);
+                //echo($value['vehicle']['make']);
+                //echo($value['vehicle']['model']);
+                foreach ($value['features'] as $features) {
+                    foreach ($features as $feature) {
+                        dump($feature);
+
+                    }
+                    //dump($features);
+                }
                 foreach ($value['media']['images'] as $images) {
-                    echo"<pre>";
-                    echo($images['href']);
-                    echo"</pre>";
+
+                    //echo("<pre>". $images['href'] ."</pre>");
+                    dump($images);
+
                 }
                 $i++;
 
