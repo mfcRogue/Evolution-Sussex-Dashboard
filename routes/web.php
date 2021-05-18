@@ -91,5 +91,6 @@ Route::get('/loancar/destroy/{id}',  [LoanCarController::class, 'destroy'])->nam
 
 //auto trader
 Route::get('/autotrader',  [AutoTraderController::class, 'index'])->name('autotrader.index')->middleware(['auth']);
+Route::get('/autotrader/wordpress',  [AutoTraderController::class, 'wordpress'])->name('autotrader.wordpress')->middleware(['auth']);
 require __DIR__.'/auth.php';
 
