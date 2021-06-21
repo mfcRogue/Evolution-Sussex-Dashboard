@@ -322,7 +322,7 @@ class ReminderSendController extends Controller
             $valid_number = "44$number_stripped";
             //once validated, push to Nexmo Function
             
-            $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service and MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
+            $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service and MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Evolution Sussex';
             //dump($message_text , $valid_number);
             //send number and message
             Nexmo::message()->send([
@@ -378,7 +378,7 @@ class ReminderSendController extends Controller
             //add 44 required for Nexmo API
             $valid_number = "44$number_stripped";
             //once validated, push to Nexmo Function
-            $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
+            $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its MOT, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Evolution Sussex';
             
             //dump($message_text , $valid_number);
             //send number and message
@@ -435,7 +435,7 @@ class ReminderSendController extends Controller
         //add 44 required for Nexmo API
         $valid_number = "44$number_stripped";
         //once validated, push to Nexmo Function
-        $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Brighton Mitsubishi';
+        $message_text = 'Dear '. $sms_data->Title . ' ' . $sms_data->Name . ' your ' . $sms_data->Make . ' ' . $sms_data->Model . ' is coming due for its service, to book in please contact David on 01273 388804, service@evosussex.co.uk or reply to this message. Many thanks Evolution Sussex';
         //dump($message_text , $valid_number);
         //send number and message
         Nexmo::message()->send([
