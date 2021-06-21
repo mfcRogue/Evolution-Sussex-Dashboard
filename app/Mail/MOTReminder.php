@@ -29,7 +29,7 @@ class MOTReminder extends Mailable
      */
     public function build()
     {
-        return $this->from('service@evosussex.co.uk', "Brighton Mitsubishi")
+        return $this->from('service@evosussex.co.uk', "Evolution Sussex")
         ->subject('Re: MOT Reminder')
         ->view('mail.reminder.mot');
     }
