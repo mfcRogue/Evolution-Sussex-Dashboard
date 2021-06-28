@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use Codexshaper\WooCommerce\Facades\Product;
 use Codexshaper\WooCommerce\Facades\Attribute;
+use Codexshaper\WooCommerce\Facades\WooCommerce;
 
 use Illuminate\Support\Facades\DB;
 
@@ -46,7 +47,7 @@ class AutoTraderController extends Controller
         //get vehicle information
         // use header Auth => Bearer {token}
         //get specific information
-        $response2 = $client->get("https://api-sandbox.autotrader.co.uk/service/stock-management/vehicles?registration=$reg&advertiserId=$trader_id", [            
+        $response2 = $client->get("https://api-sandbox.autotrader.co.uk/service/stock-management/vehicles?registration=$reg&advertiserId=$trader_id", [
             'headers' => [
                 'Content-Type' => 'application/json;charset=UTF-8',
                 'Authorization' => "Bearer {$token}",
@@ -54,13 +55,13 @@ class AutoTraderController extends Controller
             ]);
 
             $response2 = json_decode($response2->getBody(), true);
-            
+
             //for each vehicle
             foreach ($response2['results'] as $value) {
                 $reg = $value['vehicle']['registration'];
                 $image = $value['media']['images'];
-                $description = $value['adverts']['retailAdverts']['description2'];    
-                $price = $value['adverts']['forecourtPrice']['amountGBP'];  
+                $description = $value['adverts']['retailAdverts']['description2'];
+                $price = $value['adverts']['forecourtPrice']['amountGBP'];
                 //convert from href (auto trader) to src (woocommerce)
                 unset($images);
                 //remove images before loop to stop aggregation
@@ -70,36 +71,36 @@ class AutoTraderController extends Controller
                     $newarr['src'] =  $oldarr;
                     $oldarr  = $newarr;
                     unset($newarr);
-                    
+
                     $images[] = $oldarr;
                 }
-               
-         
-          
-                
+
+
+
+
                 //get feature list for every vehicle
                $response3 = $client->get("https://api-sandbox.autotrader.co.uk/service/stock-management/vehicles?registration=$reg&features=true&advertiserId=$trader_id", [
                     'headers' => [
                         'Content-Type' => 'application/json;charset=UTF-8',
                         'Authorization' => "Bearer {$token}",
-        
+
                     ],
                     ]);
-                
+
                     $response3 = json_decode($response3->getBody(), true);
-              
+
 
                 $make = $response3['vehicle']['make'];
                 $model = $response3['vehicle']['model'];
-               
+
                 $name = $make .' '. $model;
-                
+
                 echo"$reg | $name | $description | £$price";
                 dump($images);
                 dump($value);
                 dump($response3);
 
-                
+
             }
             //$products = Product::get()->where('name', '=', $name);
             //dump($products);
@@ -108,7 +109,7 @@ class AutoTraderController extends Controller
                     'id' => 35,
                 ],
             ];
-            
+
             /*$product                    = new Product;
             $product->name              = $name;
             $product->type              = 'simple';
@@ -118,10 +119,17 @@ class AutoTraderController extends Controller
             $product->categories        = $categories;
             $product->images            = $images;
             $product->save();
-            */                          
+            */
 
     }
+    public function getwoolist()
+    {
+        //get woo commerce list
+        return WooCommerce::all('products');
+        dump($products);
 
+
+    }
     public function getlist()
     {
     /*
@@ -173,7 +181,7 @@ class AutoTraderController extends Controller
             ]);
             //decode response
             $response2 = json_decode($response2->getBody(), true);
-            
+
             //increment status db record by 1
             DB::table('autotrader')->update(['status' => 'delete']);
             //get every current Auto trader vehicle reg
@@ -196,9 +204,9 @@ class AutoTraderController extends Controller
     *   Seach Database for new records
     *   Get auto trader base information
     *   Convert Base information into Wordpress / Ecommerce
-    *   
-    *   
-    *   
+    *
+    *
+    *
     */
     // auth with auto trader api
       //get trader ID from .env file
@@ -236,12 +244,12 @@ class AutoTraderController extends Controller
     ->get();
     // loop through and grab reg
     foreach($autotrader as $trader_data){
-        
+
         //reg from DB
         $reg = $trader_data->reg;
 
         //get auto trader API data for this reg number
-        $response2 = $client->get("https://api-sandbox.autotrader.co.uk/service/stock-management/vehicles?registration=$reg&advertiserId=$trader_id", [            
+        $response2 = $client->get("https://api-sandbox.autotrader.co.uk/service/stock-management/vehicles?registration=$reg&advertiserId=$trader_id", [
             'headers' => [
                 'Content-Type' => 'application/json;charset=UTF-8',
                 'Authorization' => "Bearer {$token}",
@@ -255,8 +263,8 @@ class AutoTraderController extends Controller
                 echo"<pre>$at_vin | $at_reg</pre>";
                 dump($value);
             }
-            
+
     }
-    
+
     }
 }

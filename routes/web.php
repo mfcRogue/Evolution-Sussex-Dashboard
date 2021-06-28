@@ -94,5 +94,6 @@ Route::get('/autotrader',  [AutoTraderController::class, 'index'])->name('autotr
 //Route::get('/autotrader/wordpress',  [AutoTraderController::class, 'wordpress'])->name('autotrader.wordpress')->middleware(['auth']);
 Route::get('/autotrader/getlist',  [AutoTraderController::class, 'getlist'])->name('autotrader.getlist')->middleware(['auth']);
 Route::get('/autotrader/getnew',  [AutoTraderController::class, 'getnew'])->name('autotrader.getnew')->middleware(['auth']);
+Route::get('/autotrader/getwoolist',  [AutoTraderController::class, 'getwoolist'])->name('autotrader.getwoolist')->middleware(['auth']);
 require __DIR__.'/auth.php';
 
