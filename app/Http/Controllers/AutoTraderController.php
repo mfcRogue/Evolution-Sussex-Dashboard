@@ -9,6 +9,8 @@ use Codexshaper\WooCommerce\Facades\Product;
 use Codexshaper\WooCommerce\Facades\Attribute;
 use Codexshaper\WooCommerce\Facades\WooCommerce;
 use Illuminate\Support\Facades\DB;
+use Storage;
+
 
 class AutoTraderController extends Controller
 {
@@ -25,6 +27,38 @@ class AutoTraderController extends Controller
             echo"<pre>$product->name</pre>";
         }
        
+    }
+    public function getimage()
+    {
+        $autotrader = DB::table('autotrader')
+        ->where('status', '=', 'new')
+        ->limit(1)
+        ->get();
+        foreach ($autotrader as $vehicle)
+        {
+            $autotrader_images = DB::table('autotrader_images')
+            ->where('reg', '=', $vehicle->reg)
+            ->get();
+            foreach ($autotrader_images as $value)
+            {
+            $url = $value->href;
+            $contents = file_get_contents($url);
+            $name = substr($url, strrpos($url, '/') + 1);
+            Storage::put($name, $contents);
+            $affected = DB::table('autotrader_images')
+            ->where('id', $value->id)
+            ->update(['status' => 'update']);  
+            $product_id = 40;
+            $data       = [
+
+            ];
+
+$product = Product::update($product_id, $data);
+                    
+            }
+        }
+        
+        
     }
     public function getlist()
     {
@@ -131,26 +165,26 @@ class AutoTraderController extends Controller
     *
     */
     // auth with auto trader api
-      //get trader ID from .env file
-        //this is supplied by Auto Trader
-        $trader_id = env('AUTOTRADER_ID');
-        //start new Guzzle Clinent
-        $client = new Client();
+    //get trader ID from .env file
+    //this is supplied by Auto Trader
+    $trader_id = env('AUTOTRADER_ID');
+    //start new Guzzle Clinent
+    $client = new Client();
 
-        //post authenticate to Auto Trader
-        //URL sandbox is for testing
-        //content type must be www-form-urlencoded
-        //documentation: https://developers.autotrader.co.uk/api#instructions
-        $response = $client->post('https://api-sandbox.autotrader.co.uk/authenticate', [
-            'headers' => [
-                'Content-Type' => 'application/x-www-form-urlencoded',
-            ],
-            'form_params' => [
-                'key' => env('AUTOTRADER_KEY'),
-                'secret' => env('AUTOTRADER_SECRET'),
+    //post authenticate to Auto Trader
+    //URL sandbox is for testing
+    //content type must be www-form-urlencoded
+    //documentation: https://developers.autotrader.co.uk/api#instructions
+    $response = $client->post('https://api-sandbox.autotrader.co.uk/authenticate', [
+        'headers' => [
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ],
+        'form_params' => [
+            'key' => env('AUTOTRADER_KEY'),
+            'secret' => env('AUTOTRADER_SECRET'),
 
-            ],
-        ]);
+        ],
+    ]);
 
     // You need to parse the response body
     // This will parse it into an array
@@ -168,7 +202,8 @@ class AutoTraderController extends Controller
     // loop through and grab reg
     foreach($autotrader as $trader_data){
 
-        //reg from DB
+        //stockid from DB
+        //this is recommmended by Auto trader API team
         $stockId = $trader_data->stockId;
 
         //get auto trader API data for this reg number
@@ -179,304 +214,298 @@ class AutoTraderController extends Controller
             ],
             ]);
         
-            $response2 = json_decode($response2->getBody(), true);
-            dump($response2);
-            foreach ($response2['results'] as $value) {
-                
-                $reg = $value['vehicle']['registration'];
-                $make = $value['vehicle']['make'];
-                $model =$value['vehicle']['model'];
-                $model =$value['vehicle']['model'];
-                $product_name = $make . ' ' . $model;
-                $description = $value['adverts']['retailAdverts']['description2'];
-                $description_short = $product_name . ' ' .$value['vehicle']['derivative'];
-                $price = strval($value['adverts']['retailAdverts']['price']['amountGBP']);
-                $autotrader_images = DB::table('autotrader_images')
-                ->where('reg', '=', $reg)
-                ->get();
-            
-            
-                foreach($autotrader_images as $image)
-                {
-
-                    $images[] = ['src' => $image->href];
-                }
-                $data = [
-                    'name'              => $product_name,
-                    'type'              => 'simple',
-                    'regular_price'     => $price,
-                    'description'       =>  $description,
-                    'short_description' => $description_short,
-                    'categories' => [
-                        [
-                        'id' => 35,
-                        ],
+        $response2 = json_decode($response2->getBody(), true);
+        //dump($response2);
+        foreach ($response2['results'] as $value) {
+            //get database information required    
+            $reg = $value['vehicle']['registration'];
+            $make = $value['vehicle']['make'];
+            $model = $value['vehicle']['model'];
+            $model = $value['vehicle']['model'];
+            $product_name = $make . ' ' . $model;
+            //use make and model as product name, woocommerce automatically adds unique number to end if multiple names exist
+            $description = $value['adverts']['retailAdverts']['description2'];
+            $description_short = $product_name . ' ' .$value['vehicle']['derivative'];
+            //string converstion required using strval as int not valid for price
+            $price = strval($value['adverts']['retailAdverts']['price']['amountGBP']);
+            //images not present as we will need to pull them and store them locally before displaying
+            //also images here caused timeout issues
+            //used vehicle id 35
+            //attributes data pulled directly from Autotrader website, concerted to string using strval to stop null values breaking
+            $data = [
+                'name'              => $product_name,
+                'type'              => 'simple',
+                'regular_price'     => $price,
+                'description'       => $description,
+                'short_description' => $description_short,
+                'categories' => [
+                    [
+                    'id' => 35,
                     ],
-                    'attributes' => [
-                        [
-                            'name' => 'Body Type',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['bodyType']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Ownership Condition',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['ownershipCondition']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Generation',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['generation']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Derivative',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['derivative']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Vehicle Type',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['vehicleType']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Trim',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['trim']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Body Type',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['bodyType']),
-                            ]
-                        ],
-                        
-                        [
-                            'name' => 'Fuel Type',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['fuelType']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Cab Type',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                             strval($value['vehicle']['cabType']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Fuel Type',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['fuelType']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Cab Type',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
+                ],
+                'attributes' => [
+                    [
+                        'name' => 'Body Type',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['bodyType']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Ownership Condition',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['ownershipCondition']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Generation',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['generation']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Derivative',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['derivative']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Vehicle Type',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['vehicleType']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Trim',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['trim']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Body Type',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['bodyType']),
+                        ]
+                    ],
+                    
+                    [
+                        'name' => 'Fuel Type',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['fuelType']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Cab Type',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
                             strval($value['vehicle']['cabType']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Transmission Type',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['transmissionType']),
-                            ]
-                        ],
-
-[
-                            'name' => 'Wheelbase Type',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['wheelbaseType']),
-                            ]
-                        ],
- 
-[
-                            'name' => 'Roof Height Type',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['roofHeightType']),
-                            ]
-                        ],
-[
-                            'name' => 'Drive Train',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['drivetrain']),
-                            ]
-                        ],
-[
-                            'name' => 'Seats',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                                strval($value['vehicle']['seats']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Doors',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                                strval($value['vehicle']['doors']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Top Speed MPH',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                                strval($value['vehicle']['topSpeedMPH']),
-                            ]
-                        ],
-                        [
-                            'name' => '0-60 MPH in Seconds',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                                strval($value['vehicle']['zeroToSixtyMPHSeconds']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Engine Size in Litres',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                                strval($value['vehicle']['badgeEngineSizeLitres']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Engine Capacity CC',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                                strval($value['vehicle']['engineCapacityCC']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Engine Power BHP',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                                strval($value['vehicle']['enginePowerBHP']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Fuel Capacity Litres',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                                strval($value['vehicle']['fuelCapacityLitres']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Emission Class',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['emissionClass']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Fuel Economy WLTP Combined MPG',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                                strval($value['vehicle']['fuelEconomyWLTPCombinedMPG']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Boot Space (Seats Up) in Litres',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                                strval($value['vehicle']['bootSpaceSeatsUpLitres']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Insurance Group',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                            strval($value['vehicle']['insuranceGroup']),
-                            ]
-                        ],
-                        [
-                            'name' => 'Odometer Reading in Miles',
-                            'position' => 0,
-                            'visible' => true,
-                            'variation' => true,
-                            'options' => [
-                                strval($value['vehicle']['odometerReadingMiles']),
-                            ]
-                        ],
+                        ]
                     ],
-           
-                ];
-                $product = Product::create($data);
-                $affected = DB::table('autotrader')
-                ->where('stockId', $stockId)
-                ->update(['status' => 'update']);  
-            }
-
+                    [
+                        'name' => 'Fuel Type',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['fuelType']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Cab Type',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['cabType']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Transmission Type',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['transmissionType']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Wheelbase Type',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['wheelbaseType']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Roof Height Type',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['roofHeightType']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Drive Train',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['drivetrain']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Seats',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                            strval($value['vehicle']['seats']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Doors',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                            strval($value['vehicle']['doors']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Top Speed MPH',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                            strval($value['vehicle']['topSpeedMPH']),
+                        ]
+                    ],
+                    [
+                        'name' => '0-60 MPH in Seconds',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                            strval($value['vehicle']['zeroToSixtyMPHSeconds']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Engine Size in Litres',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                            strval($value['vehicle']['badgeEngineSizeLitres']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Engine Capacity CC',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                            strval($value['vehicle']['engineCapacityCC']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Engine Power BHP',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                            strval($value['vehicle']['enginePowerBHP']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Fuel Capacity Litres',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                            strval($value['vehicle']['fuelCapacityLitres']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Emission Class',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['emissionClass']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Fuel Economy WLTP Combined MPG',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                            strval($value['vehicle']['fuelEconomyWLTPCombinedMPG']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Boot Space (Seats Up) in Litres',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                            strval($value['vehicle']['bootSpaceSeatsUpLitres']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Insurance Group',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                        strval($value['vehicle']['insuranceGroup']),
+                        ]
+                    ],
+                    [
+                        'name' => 'Odometer Reading in Miles',
+                        'position' => 0,
+                        'visible' => true,
+                        'variation' => true,
+                        'options' => [
+                            strval($value['vehicle']['odometerReadingMiles']),
+                        ]
+                    ],
+                ],
+        
+            ];
+            $product = Product::create($data);
+            $affected = DB::table('autotrader')
+            ->where('stockId', $stockId)
+            ->update(['status' => 'update']);  
+        }
+    //end for each 
     }
 
     }
