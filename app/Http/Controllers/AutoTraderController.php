@@ -10,6 +10,7 @@ use Codexshaper\WooCommerce\Facades\Attribute;
 use Codexshaper\WooCommerce\Facades\WooCommerce;
 use Illuminate\Support\Facades\DB;
 use Storage;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 
 class AutoTraderController extends Controller
@@ -22,44 +23,16 @@ class AutoTraderController extends Controller
     {
         //get woo commerce product list
         $products = Product::all();
+        //dump($products);
         foreach($products as $product)
         {
-            echo"<pre>$product->name</pre>";
+            dump($product);
+            $count = count($product->images);
+            echo"$count";
         }
        
     }
-    public function getimage()
-    {
-        $autotrader = DB::table('autotrader')
-        ->where('status', '=', 'new')
-        ->limit(1)
-        ->get();
-        foreach ($autotrader as $vehicle)
-        {
-            $autotrader_images = DB::table('autotrader_images')
-            ->where('reg', '=', $vehicle->reg)
-            ->get();
-            foreach ($autotrader_images as $value)
-            {
-            $url = $value->href;
-            $contents = file_get_contents($url);
-            $name = substr($url, strrpos($url, '/') + 1);
-            Storage::put($name, $contents);
-            $affected = DB::table('autotrader_images')
-            ->where('id', $value->id)
-            ->update(['status' => 'update']);  
-            $product_id = 40;
-            $data       = [
 
-            ];
-
-$product = Product::update($product_id, $data);
-                    
-            }
-        }
-        
-        
-    }
     public function getlist()
     {
     /*
@@ -222,6 +195,27 @@ $product = Product::update($product_id, $data);
             $make = $value['vehicle']['make'];
             $model = $value['vehicle']['model'];
             $model = $value['vehicle']['model'];
+            $images = $value['media']['images'];
+        
+           foreach($images as $image)
+            {
+                $url = $image['href'];
+                $info = pathinfo($url);
+                $contents = file_get_contents($url);
+                $file ='storage/'. $info['basename'];
+                file_put_contents($file, $contents);
+                $uploaded_file = new UploadedFile($file, $info['basename']);
+                $uploaded_files[] = 'https://dashboard.evosussex.co.uk/storage/'. $info['basename'];
+                
+            }
+    
+            $newArray = array();
+            foreach($uploaded_files as $key => $val){
+	            $newArray['images'][$key] = array('src'=>$val);
+            }
+            
+            
+
             $product_name = $make . ' ' . $model;
             //use make and model as product name, woocommerce automatically adds unique number to end if multiple names exist
             $description = $value['adverts']['retailAdverts']['description2'];
@@ -232,7 +226,7 @@ $product = Product::update($product_id, $data);
             //also images here caused timeout issues
             //used vehicle id 35
             //attributes data pulled directly from Autotrader website, concerted to string using strval to stop null values breaking
-            $data = [
+                $data = [
                 'name'              => $product_name,
                 'type'              => 'simple',
                 'regular_price'     => $price,
@@ -498,13 +492,16 @@ $product = Product::update($product_id, $data);
                         ]
                     ],
                 ],
+                
+                'images' => $newArray['images']
         
             ];
             $product = Product::create($data);
             $affected = DB::table('autotrader')
             ->where('stockId', $stockId)
-            ->update(['status' => 'update']);  
+            ->update(['status' => 'update']);
         }
+        //dd($data);
     //end for each 
     }
 
