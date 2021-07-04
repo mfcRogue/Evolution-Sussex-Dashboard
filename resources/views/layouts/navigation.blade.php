@@ -35,6 +35,11 @@
                     <x-nav-link :href="route('loancar.index')" :active="request()->routeIs('loancar.*')">
                         {{ __('Loan Car System') }}
                     </x-nav-link>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-2 sm:flex">
+                        <x-nav-link :href="route('autotrader.index')" :active="request()->routeIs('autotrader.*')">
+                            {{ __('Autotrader System') }}
+                        </x-nav-link>
+                    </div>
                 </div>
             </div>
 

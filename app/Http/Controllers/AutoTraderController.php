@@ -18,19 +18,9 @@ class AutoTraderController extends Controller
     //
     public function index()
     {
-    }
-    public function getwoolist()
-    {
-        //get woo commerce product list
-        $products = Product::all();
-        //dump($products);
-        foreach($products as $product)
-        {
-            dump($product);
-            $count = count($product->images);
-            echo"$count";
-        }
-       
+        $vehicles = DB::table('autotrader')->get();
+
+        return view('autotrader.index', ['vehicles' => $vehicles]);
     }
 
     public function getlist()
@@ -106,15 +96,15 @@ class AutoTraderController extends Controller
                     foreach($image as $href)
                     {
                         // for each image for each vehicle update or insert
-                        
+
                         DB::table('autotrader_images')
                         ->updateOrInsert(
                         ['reg' => $reg , 'status' => 'update', 'href' => $href], ['reg' => $reg , 'status' => 'new', 'href' => $href]
                         );
                     }
-                    
+
                 }
-                
+
 
             //for each vehicle update or insert new record with status being 0
                 DB::table('autotrader')
@@ -186,17 +176,17 @@ class AutoTraderController extends Controller
                 'Authorization' => "Bearer {$token}",
             ],
             ]);
-        
+
         $response2 = json_decode($response2->getBody(), true);
         //dump($response2);
         foreach ($response2['results'] as $value) {
-            //get database information required    
+            //get database information required
             $reg = $value['vehicle']['registration'];
             $make = $value['vehicle']['make'];
             $model = $value['vehicle']['model'];
             $model = $value['vehicle']['model'];
             $images = $value['media']['images'];
-        
+
            foreach($images as $image)
             {
                 $url = $image['href'];
@@ -206,15 +196,15 @@ class AutoTraderController extends Controller
                 file_put_contents($file, $contents);
                 $uploaded_file = new UploadedFile($file, $info['basename']);
                 $uploaded_files[] = 'https://dashboard.evosussex.co.uk/storage/'. $info['basename'];
-                
+
             }
-    
+
             $newArray = array();
             foreach($uploaded_files as $key => $val){
 	            $newArray['images'][$key] = array('src'=>$val);
             }
-            
-            
+
+
 
             $product_name = $make . ' ' . $model;
             //use make and model as product name, woocommerce automatically adds unique number to end if multiple names exist
@@ -301,7 +291,7 @@ class AutoTraderController extends Controller
                         strval($value['vehicle']['bodyType']),
                         ]
                     ],
-                    
+
                     [
                         'name' => 'Fuel Type',
                         'position' => 0,
@@ -492,9 +482,9 @@ class AutoTraderController extends Controller
                         ]
                     ],
                 ],
-                
+
                 'images' => $newArray['images']
-        
+
             ];
             $product = Product::create($data);
             $affected = DB::table('autotrader')
@@ -502,7 +492,7 @@ class AutoTraderController extends Controller
             ->update(['status' => 'update']);
         }
         //dd($data);
-    //end for each 
+    //end for each
     }
 
     }

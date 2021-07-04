@@ -91,10 +91,7 @@ Route::get('/loancar/destroy/{id}',  [LoanCarController::class, 'destroy'])->nam
 
 //auto trader
 Route::get('/autotrader',  [AutoTraderController::class, 'index'])->name('autotrader.index')->middleware(['auth']);
-//Route::get('/autotrader/wordpress',  [AutoTraderController::class, 'wordpress'])->name('autotrader.wordpress')->middleware(['auth']);
 Route::get('/autotrader/getlist',  [AutoTraderController::class, 'getlist'])->name('autotrader.getlist')->middleware(['auth']);
 Route::get('/autotrader/getnew',  [AutoTraderController::class, 'getnew'])->name('autotrader.getnew')->middleware(['auth']);
-Route::get('/autotrader/getwoolist',  [AutoTraderController::class, 'getwoolist'])->name('autotrader.getwoolist')->middleware(['auth']);
-Route::get('/autotrader/getimage',  [AutoTraderController::class, 'getimage'])->name('autotrader.getimage')->middleware(['auth']);
 require __DIR__.'/auth.php';
 
