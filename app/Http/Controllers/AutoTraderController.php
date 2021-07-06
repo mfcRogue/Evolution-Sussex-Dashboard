@@ -27,11 +27,10 @@ class AutoTraderController extends Controller
     {
     /*
     *   Get complete list of all auto trader vehicles currently active
-    *   Add +1 to status records
+    *   Mark everything as delete
     *   Store list in DB
     *   Either update if exists or insert if it doesn't
     *   Set the status back to 0 as it still exists as a listed item on Auto trader
-    *   Delete anything that is over 1 as that item now no longer exists in DB
     */
 
      //get trader ID from .env file
@@ -112,9 +111,6 @@ class AutoTraderController extends Controller
                 ['reg' => $reg , 'status' => 'update', 'stockId'=> $stockid], ['reg' => $reg , 'status' => 'new', 'stockId'=> $stockid]
                 );
             }
-            //delete all vehicles which now no longer exist
-            DB::table('autotrader')->where('status', '=', 'delete')->delete();
-            DB::table('autotrader_images')->where('status', '=', 'delete')->delete();
     }
 
     public function getnew()
