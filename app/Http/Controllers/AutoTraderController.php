@@ -137,7 +137,7 @@ class AutoTraderController extends Controller
     //get every new record from the DB
     $autotrader = DB::table('autotrader')
     ->where('status', '=', 'new')
-    ->limit(1)
+    ->limit(10)
     ->get();
     // loop through and grab reg
     foreach($autotrader as $trader_data){
