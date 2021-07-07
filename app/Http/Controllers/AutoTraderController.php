@@ -156,7 +156,13 @@ class AutoTraderController extends Controller
 
         $response2 = json_decode($response2->getBody(), true);
         //dump($response2);
+
+
         foreach ($response2['results'] as $value) {
+            unset($images);
+            unset($uploaded_file);
+            unset($uploaded_files);
+            unset($newArray);
             //get database information required
             $reg = $value['vehicle']['registration'];
             $make = $value['vehicle']['make'];
@@ -193,6 +199,7 @@ class AutoTraderController extends Controller
             //also images here caused timeout issues
             //used vehicle id 35
             //attributes data pulled directly from Autotrader website, concerted to string using strval to stop null values breaking
+            unset($data);
                 $data = [
                 'name'              => $product_name,
                 'type'              => 'simple',
