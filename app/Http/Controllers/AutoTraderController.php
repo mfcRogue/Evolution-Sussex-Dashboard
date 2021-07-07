@@ -22,7 +22,6 @@ class AutoTraderController extends Controller
 
         return view('autotrader.index', ['vehicles' => $vehicles]);
     }
-
     public function getlist()
     {
     /*
@@ -79,31 +78,12 @@ class AutoTraderController extends Controller
             //any existing vehicles will be updated
             //any new vehicle will be new
             DB::table('autotrader')->update(['status' => 'delete']);
-            DB::table('autotrader_images')->update(['status' => 'delete']);
             //get every current Auto trader vehicle reg
-            dump($response2);
+            //dump($response2);
             foreach ($response2['results'] as $value) {
                 //get reg number
                 $reg = $value['vehicle']['registration'];
                 $stockid = $value['metadata']['stockId'];
-                //get images
-                $images = $value['media']['images'];
-                //for each image for each vehicle
-                foreach($images as $image)
-                {
-                    //for some reason this is an array, break down to get link
-                    foreach($image as $href)
-                    {
-                        // for each image for each vehicle update or insert
-
-                        DB::table('autotrader_images')
-                        ->updateOrInsert(
-                        ['reg' => $reg , 'status' => 'update', 'href' => $href], ['reg' => $reg , 'status' => 'new', 'href' => $href]
-                        );
-                    }
-
-                }
-
 
             //for each vehicle update or insert new record with status being 0
                 DB::table('autotrader')
@@ -111,6 +91,7 @@ class AutoTraderController extends Controller
                 ['reg' => $reg , 'status' => 'update', 'stockId'=> $stockid], ['reg' => $reg , 'status' => 'new', 'stockId'=> $stockid]
                 );
             }
+            return redirect()->route('autotrader.index')->with('status', 'Data Synced!');
     }
 
     public function getnew()
@@ -482,14 +463,21 @@ class AutoTraderController extends Controller
                 'images' => $newArray['images']
 
             ];
+            //create the product with woo
             $product = Product::create($data);
+            //get the last product created
+            $products = Product::all()->last();
+            //get id
+            $woo_id = $products->id;
+            //input auto trader stock id and woo id then update the status so it's not new
             $affected = DB::table('autotrader')
             ->where('stockId', $stockId)
-            ->update(['status' => 'update']);
+            ->update(['status' => 'update', 'woo_id'=> $woo_id]);
         }
         //dd($data);
     //end for each
     }
+    return redirect()->route('autotrader.index')->with('status', 'New vehicles updated!');
 
     }
 }
