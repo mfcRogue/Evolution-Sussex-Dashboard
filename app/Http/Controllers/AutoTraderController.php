@@ -93,8 +93,19 @@ class AutoTraderController extends Controller
             }
             return redirect()->route('autotrader.index')->with('status', 'Data Synced!');
     }
-
     public function getnew()
+    {
+        $autotrader = DB::table('autotrader')
+        ->where('status', '=', 'new')
+        ->count();
+        if ($autotrader > 0) {
+            return redirect()->route('autotrader.getnewloop');
+
+        }else{
+            return redirect()->route('autotrader.index')->with('status', 'Proccess completed!');
+        }
+    }
+    public function getnewloop()
     {
     /*
     *   Seach Database for new records
@@ -484,7 +495,7 @@ class AutoTraderController extends Controller
         //dd($data);
     //end for each
     }
-    return redirect()->route('autotrader.index')->with('status', 'New vehicles updated!');
+    return redirect()->route('autotrader.getnew');
 
     }
 }
