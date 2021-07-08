@@ -166,8 +166,6 @@ class AutoTraderController extends Controller
             ]);
 
         $response2 = json_decode($response2->getBody(), true);
-        //dump($response2);
-
 
         foreach ($response2['results'] as $value) {
             unset($images);
@@ -177,7 +175,6 @@ class AutoTraderController extends Controller
             //get database information required
             $reg = $value['vehicle']['registration'];
             $make = $value['vehicle']['make'];
-            $model = $value['vehicle']['model'];
             $model = $value['vehicle']['model'];
             $images = $value['media']['images'];
 
