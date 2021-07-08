@@ -514,6 +514,6 @@ class AutoTraderController extends Controller
             ->where('woo_id', '=', $data->woo_id)
             ->delete();
         }
-        return redirect()->route('autotrader.getnew')->with('status', 'Deleted completed!');
+        return redirect()->route('autotrader.index')->with('status', 'Deleted completed!');
     }
 }
