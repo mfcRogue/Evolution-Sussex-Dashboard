@@ -513,11 +513,12 @@ class AutoTraderController extends Controller
             //delete product
             $product = Product::delete($product_id, $options);
             //delete from DB
+            DB::table('autotrader')
+            ->where('woo_id', '=', $product_id)
+            ->delete(); 
             }
         }
-        DB::table('autotrader')
-        ->where('status', '=', 'delete')
-        ->delete(); 
+
         return redirect()->route('autotrader.index')->with('status', 'Deleted completed!');
     }
 }
