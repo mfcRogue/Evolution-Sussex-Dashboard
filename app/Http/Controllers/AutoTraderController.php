@@ -475,13 +475,13 @@ class AutoTraderController extends Controller
                     ],
                 ],
 
-                'images' => $newArray['images']
+                /*'images' => $newArray['images']*/
 
             ];
             //create the product with woo
             $product = Product::create($data);
             //get the last product created
-            $products = Product::all()->max()->limit(1);
+            $products = Product::all()->max();
             //get id
             $woo_id = $products->id;
             //input auto trader stock id and woo id then update the status so it's not new
