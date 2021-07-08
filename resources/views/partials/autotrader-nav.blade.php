@@ -19,4 +19,9 @@
             {{ __('Push New Vehicles') }}
         </x-nav-link>
     </div>
+        <div class="flex-shrink-0 flex items-center  ml-4">
+        <x-nav-link :href="route('autotrader.getdelete')" :active="request()->routeIs('autotrader.getdelete')">
+            {{ __('Delete Vehicles') }}
+        </x-nav-link>
+    </div>
 </x-slot>

@@ -94,5 +94,6 @@ Route::get('/autotrader',  [AutoTraderController::class, 'index'])->name('autotr
 Route::get('/autotrader/getlist',  [AutoTraderController::class, 'getlist'])->name('autotrader.getlist')->middleware(['auth']);
 Route::get('/autotrader/getnewloop',  [AutoTraderController::class, 'getnewloop'])->name('autotrader.getnewloop')->middleware(['auth']);
 Route::get('/autotrader/getnew',  [AutoTraderController::class, 'getnew'])->name('autotrader.getnew')->middleware(['auth']);
+Route::get('/autotrader/getdelete',  [AutoTraderController::class, 'getdelete'])->name('autotrader.getdelete')->middleware(['auth']);
 require __DIR__.'/auth.php';
 
