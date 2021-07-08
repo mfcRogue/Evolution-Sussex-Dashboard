@@ -501,19 +501,23 @@ class AutoTraderController extends Controller
         $autotrader = DB::table('autotrader')
         ->where('status', '=', 'delete')
         ->get();
+        //dd($autotrader);
         //for each item, delete from auto trader
         foreach($autotrader as $data){
             //get product id
             $product_id = $data->woo_id;
+            if($product_id != null)
+            {
             // Set force option true for delete permanently. Default value false
             $options = ['force' => true]; 
             //delete product
             $product = Product::delete($product_id, $options);
             //delete from DB
+            }
         }
         DB::table('autotrader')
         ->where('status', '=', 'delete')
-        ->delete();
+        ->delete(); 
         return redirect()->route('autotrader.index')->with('status', 'Deleted completed!');
     }
 }
